@@ -141,6 +141,15 @@
         <input type="range" id="ratioBroll" min="40" max="90" value="70" step="5">
       </div>
 
+      <div class="field">
+        <span class="field-label" data-i18n="lblPacing">Cut pace — how often the camera cuts to a new shot</span>
+        <select id="avgShotSec">
+          <option value="4" data-i18n="paceFast">Fast cuts (~4s/shot) — high energy, social-first</option>
+          <option value="7" selected data-i18n="paceStandard">Standard (~7s/shot) — balanced</option>
+          <option value="10" data-i18n="paceSlow">Slower, cinematic (~10s/shot) — luxury feel</option>
+        </select>
+      </div>
+
       <div class="field" id="negativeField">
         <span class="field-label" data-i18n="lblNegative">Negative prompt — excluded from every generation</span>
         <div class="neg-grid" id="negativeGrid">
@@ -290,7 +299,7 @@
 
     <section class="panel skeleton-panel">
       <h3 data-i18n="skeletonTitle">Scene-timing skeleton</h3>
-      <p class="panel-sub" data-i18n="skeletonSub">Auto-split by framework stage weighting and an ~7s average shot length.</p>
+      <p class="panel-sub" id="skeletonSub" data-i18n="skeletonSub">Auto-split by framework stage weighting and an ~7s average shot length.</p>
       <div id="skeletonOutput" class="skeleton-output"></div>
     </section>
 

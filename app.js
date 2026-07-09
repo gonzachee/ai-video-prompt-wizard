@@ -42,6 +42,11 @@
       lblDelivery: "Delivery — primary mode", optFaceCam: "Face-to-camera (prioritised)", optVO: "Voice over (prioritised)",
       lblMood: "Mood / tone", moodLuxury: "Luxury", moodEnergetic: "Energetic", moodCozy: "Cozy", moodPlayful: "Playful", moodCalm: "Calm",
       lblRatio: "Lifestyle b-roll vs. talk ratio —",
+      lblPacing: "Cut pace — how often the camera cuts to a new shot",
+      paceFast: "Fast cuts (~4s/shot) — high energy, social-first",
+      paceStandard: "Standard (~7s/shot) — balanced",
+      paceSlow: "Slower, cinematic (~10s/shot) — luxury feel",
+      modeFace: "Face-cam", modeVO: "Voice-over", modeBroll: "B-roll",
       lblNegative: "Negative prompt — excluded from every generation",
       neg1: "No subtitles / on-screen text", neg2: "No background music", neg3: "No sound effects",
       neg4: "No static camera during talk", neg5: "No stiff / robotic delivery", neg6: "No boring opening shot",
@@ -74,7 +79,7 @@
       btnNewProject: "New project (clears this section only)",
       readinessTitle: "Readiness check",
       skeletonTitle: "Scene-timing skeleton",
-      skeletonSub: "Auto-split by framework stage weighting and an ~7s average shot length.",
+      skeletonSub: "Auto-split by framework stage weighting and an ~{sec}s average shot length.",
       promptTitle: "Assembled prompt", btnCopy: "Copy prompt", btnDownload: "Download .txt",
       promptNote: "Always assembled in English — AI video tools parse English prompts most reliably.",
       footer: "Built from the 8 July 2026 AI Video Prompt Workshop method. Runs entirely in your browser — nothing is sent anywhere.",
@@ -130,6 +135,11 @@
       lblDelivery: "表达方式 — 主要模式", optFaceCam: "对镜说话（优先）", optVO: "旁白配音（优先）",
       lblMood: "氛围 / 基调", moodLuxury: "奢华", moodEnergetic: "充满活力", moodCozy: "温馨", moodPlayful: "活泼", moodCalm: "平静",
       lblRatio: "生活空镜与对话的比例 —",
+      lblPacing: "剪辑节奏 — 镜头切换的频率",
+      paceFast: "快剪（约 4 秒／镜头）— 高能量，适合社交平台",
+      paceStandard: "标准（约 7 秒／镜头）— 平衡",
+      paceSlow: "慢节奏、电影感（约 10 秒／镜头）— 奢华感",
+      modeFace: "对镜说话", modeVO: "旁白配音", modeBroll: "空镜",
       lblNegative: "负面提示 — 每次生成都会排除",
       neg1: "不要字幕／画面文字", neg2: "不要背景音乐", neg3: "不要音效",
       neg4: "讲话时不要固定镜头", neg5: "不要僵硬 / 机械式的表达", neg6: "不要无聊的开场镜头",
@@ -162,7 +172,7 @@
       btnNewProject: "新项目（仅清空本区块）",
       readinessTitle: "就绪检查",
       skeletonTitle: "场景时长骨架",
-      skeletonSub: "按框架阶段权重与约 7 秒的平均镜头时长自动拆分。",
+      skeletonSub: "按框架阶段权重与约 {sec} 秒的平均镜头时长自动拆分。",
       promptTitle: "组装完成的提示词", btnCopy: "复制提示词", btnDownload: "下载 .txt",
       promptNote: "提示词始终以英文组装 — AI 视频工具对英文提示词的理解最稳定。",
       footer: "内容整理自 2026 年 7 月 8 日的 AI 视频提示词工作坊方法论。完全在你的浏览器内运行 — 不会上传到任何地方。",
@@ -203,6 +213,69 @@
     "Social Proof": "从众效应", Authority: "权威背书", Anchoring: "价格锚定",
   };
 
+  // Camera-move phrase pools — cycled independently per mode so adjacent
+  // shots never repeat the same move, giving each cut visible variety.
+  const MOVES = {
+    face: {
+      en: [
+        "Follow-cam tracking alongside as he walks",
+        "Slow push-in while he delivers the line",
+        "Circular tracking shot around talent",
+        "Low-angle tracking shot, walk-and-reveal",
+        "Steady handheld follow, close 3/4 angle",
+      ],
+      zh: [
+        "跟拍镜头，随他走动",
+        "缓慢推近，配合台词",
+        "环绕跟拍镜头",
+        "低角度跟拍，边走边揭示",
+        "稳定手持跟拍，3/4 侧脸近景",
+      ],
+    },
+    vo: {
+      en: [
+        "Slow gliding b-roll under voice-over",
+        "Macro push-in under voice-over narration",
+        "Wide establishing pan under voice-over",
+      ],
+      zh: [
+        "旁白配音下的缓慢空镜滑动",
+        "旁白配音下的微距推近",
+        "旁白配音下的广角横摇",
+      ],
+    },
+    broll: {
+      en: [
+        "Slow drone glide reveal",
+        "Dolly-in on facility detail",
+        "Wide establishing pan",
+        "Macro push-in on texture/feature",
+        "Whip-pan transition to next space",
+        "Slow pull-back reveal",
+        "Handheld walk-through",
+        "Slow orbit around key feature",
+      ],
+      zh: [
+        "缓慢无人机航拍揭示",
+        "推近设施细节",
+        "广角横摇空镜",
+        "微距特写材质／卖点",
+        "甩镜转场至下一空间",
+        "缓慢拉远揭示",
+        "手持穿行镜头",
+        "围绕核心卖点缓慢环绕",
+      ],
+    },
+  };
+  function makeMovePicker(){
+    const counters = { face: 0, vo: 0, broll: 0 };
+    return (mode) => {
+      const i = counters[mode]++;
+      const pool = MOVES[mode];
+      return { en: pool.en[i % pool.en.length], zh: pool.zh[i % pool.zh.length] };
+    };
+  }
+
   // maps each readiness key to which tab + field it belongs to, so the
   // "Fix" button can jump straight there.
   const READINESS_TARGET = {
@@ -231,6 +304,7 @@
     mood: document.getElementById("mood"),
     ratioBroll: document.getElementById("ratioBroll"),
     ratioReadout: document.getElementById("ratioReadout"),
+    avgShotSec: document.getElementById("avgShotSec"),
     negativeGrid: document.getElementById("negativeGrid"),
     saveStyleBtn: document.getElementById("saveStyleBtn"),
     loadStyleBtn: document.getElementById("loadStyleBtn"),
@@ -274,6 +348,7 @@
 
     reviewSummary: document.getElementById("reviewSummary"),
     readinessList: document.getElementById("readinessList"),
+    skeletonSub: document.getElementById("skeletonSub"),
     skeletonOutput: document.getElementById("skeletonOutput"),
     promptOutput: document.getElementById("promptOutput"),
     copyBtn: document.getElementById("copyBtn"),
@@ -411,6 +486,7 @@
       deliveryPrimary: els.deliveryPrimary.value,
       mood: els.mood.value,
       ratioBroll: Number(els.ratioBroll.value),
+      avgShotSec: Number(els.avgShotSec.value),
       negatives: Array.from(els.negativeGrid.querySelectorAll("input"))
         .filter(i => i.checked).map(i => i.dataset.neg),
     };
@@ -425,6 +501,7 @@
     els.deliveryPrimary.value = style.deliveryPrimary || "Face-to-camera";
     els.mood.value = style.mood || "Luxury";
     els.ratioBroll.value = style.ratioBroll || 70;
+    els.avgShotSec.value = style.avgShotSec || 7;
     const negSet = new Set(style.negatives || []);
     els.negativeGrid.querySelectorAll("input").forEach(i => { i.checked = negSet.has(i.dataset.neg); });
   }
@@ -485,8 +562,9 @@
   }
 
   // ---------- Scene skeleton ----------
-  function buildSkeleton(frameworkKey, lengthSec, triggers){
+  function buildSkeleton(frameworkKey, lengthSec, triggers, avgShotSec, deliveryPrimary){
     const meta = FRAMEWORK_META[frameworkKey] || FRAMEWORK_META.AIDA;
+    const pickMove = makeMovePicker();
     let cursor = 0;
     const rows = [];
     meta.stages.forEach(([name, pct], idx) => {
@@ -496,7 +574,7 @@
       const start = cursor;
       const end = cursor + dur;
       cursor = end;
-      const shots = Math.max(1, Math.round(dur / 7));
+
       let trigger = "";
       if (frameworkKey === "AIDA") {
         trigger = AIDA_TRIGGER_SLOT[name] || "";
@@ -512,7 +590,24 @@
         if (idx === mid && triggers[0]) trigger = triggers[0];
         if (idx === meta.stages.length - 1 && triggers[1]) trigger = triggers[1];
       }
-      rows.push({ name, start, end, shots, trigger });
+
+      // split the stage into individual, fully-specified cuts — the first
+      // cut always carries the spoken line (face-cam or VO per style),
+      // every cut after it is a supporting b-roll cutaway.
+      const shotCount = Math.max(1, Math.round(dur / avgShotSec));
+      let sCursor = start;
+      const shots = [];
+      for (let i = 0; i < shotCount; i++) {
+        const shotIsLast = i === shotCount - 1;
+        let shotDur = Math.round(dur / shotCount);
+        if (shotIsLast) shotDur = end - sCursor;
+        const sStart = sCursor, sEnd = sCursor + shotDur;
+        sCursor = sEnd;
+        const mode = i === 0 ? (deliveryPrimary === "Voice over" ? "vo" : "face") : "broll";
+        const move = pickMove(mode);
+        shots.push({ start: sStart, end: sEnd, mode, cameraEn: move.en, cameraZh: move.zh });
+      }
+      rows.push({ name, start, end, trigger, shots });
     });
     return rows;
   }
@@ -522,22 +617,35 @@
     return triggerStr.split(" + ").map(part => TRIGGER_I18N[part] || part).join(" + ");
   }
 
+  const MODE_KEY = { face: "modeFace", vo: "modeVO", broll: "modeBroll" };
+
   function renderSkeleton(rows){
     els.skeletonOutput.innerHTML = "";
     rows.forEach(r => {
-      const row = el("div", "sk-row");
+      const stageBlock = el("div", "sk-stage-block");
+      const head = el("div", "sk-stage-head");
       const time = el("span", "sk-time", `${r.start}–${r.end}s`);
-      const body = el("div");
       const stageName = lang === "zh" ? (STAGE_I18N[r.name] || r.name) : r.name.toUpperCase();
       const stage = el("span", "sk-stage", stageName);
-      const shotLabel = lang === "zh" ? `${r.shots} ${t("shotWord")}` : `${r.shots} shot${r.shots > 1 ? "s" : ""}`;
-      const triggerLabel = r.trigger ? ` · ${t("triggerWord")}: ${lang === "zh" ? translateTriggerLabel(r.trigger) : r.trigger}` : "";
-      const note = el("span", "sk-note", `${shotLabel}${triggerLabel}`);
-      body.appendChild(stage);
-      body.appendChild(note);
-      row.appendChild(time);
-      row.appendChild(body);
-      els.skeletonOutput.appendChild(row);
+      head.appendChild(time);
+      head.appendChild(stage);
+      if (r.trigger) {
+        const trig = el("span", "sk-trigger", `${t("triggerWord")}: ${lang === "zh" ? translateTriggerLabel(r.trigger) : r.trigger}`);
+        head.appendChild(trig);
+      }
+      stageBlock.appendChild(head);
+
+      r.shots.forEach(s => {
+        const shotRow = el("div", "sk-shot");
+        const shotTime = el("span", "sk-shot-time", `${s.start}–${s.end}s`);
+        const modeTag = el("span", `sk-mode sk-mode-${s.mode}`, t(MODE_KEY[s.mode]));
+        const camera = el("span", "sk-camera", lang === "zh" ? s.cameraZh : s.cameraEn);
+        shotRow.appendChild(shotTime);
+        shotRow.appendChild(modeTag);
+        shotRow.appendChild(camera);
+        stageBlock.appendChild(shotRow);
+      });
+      els.skeletonOutput.appendChild(stageBlock);
     });
   }
 
@@ -611,9 +719,13 @@
   function buildPrompt(style, project, skeleton){
     const personality = style.personality.join("/").toLowerCase() || "confident/professional";
     const uspLine = project.usps.length ? project.usps.join(" · ") : "[add your selling points]";
-    const skeletonLines = skeleton.map(r =>
-      `${r.start}-${r.end}s ${r.name}: ${r.shots} shot(s)${r.trigger ? ", trigger=" + r.trigger : ""}`
-    ).join("\n");
+    const skeletonLines = skeleton.map(r => {
+      const header = `${r.start}-${r.end}s ${r.name.toUpperCase()}${r.trigger ? " — trigger: " + r.trigger : ""}`;
+      const shotLines = r.shots.map((s, i) =>
+        `  Cut ${i + 1} (${s.start}-${s.end}s, ${s.mode}): ${s.cameraEn}`
+      ).join("\n");
+      return `${header}\n${shotLines}`;
+    }).join("\n");
     const fwMeta = FRAMEWORK_META[project.framework];
     const fwName = fwMeta ? fwMeta.name : "[choose a framework]";
     const triggerLine = getChipValues(els.triggerChips).join(", ") || "[pick 2-3 triggers]";
@@ -653,11 +765,14 @@ ${style.negatives.length ? style.negatives.join(". ") + "." : "[confirm your neg
 Scene-by-scene: # + seconds · shot & camera move · face-to-cam or VO · script ·
 on-screen suggestion · trigger. End on one clear CTA + brand card (added in edit).
 
-SCENE SKELETON — follow these time codes and shot counts exactly:
+SCENE SKELETON — follow these exact cuts, time codes, modes and camera moves.
+Each "Cut" is a separate shot in the final video (multi-cut, not one long take):
 ${skeletonLines}
 
-Now write the full scene-by-scene prompt following this skeleton, in a format
-ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
+For every cut above, write the full shot: camera framing/movement (expand on
+the move given), what's happening on screen, and — for face-cam/VO cuts only —
+the spoken line. Keep b-roll cuts wordless. Output in a format ready to paste
+straight into ${project.tool || "Seedance 2.0"}.`;
   }
 
   // ---------- Main render ----------
@@ -694,8 +809,9 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
 
     const activeFrameworkKey = project.framework || (project.audience || project.objective ? recommendFramework(project).key : "AIDA");
     const triggers = getChipValues(els.triggerChips);
-    const skeleton = buildSkeleton(activeFrameworkKey, project.lengthSec, triggers);
+    const skeleton = buildSkeleton(activeFrameworkKey, project.lengthSec, triggers, style.avgShotSec, style.deliveryPrimary);
     renderSkeleton(skeleton);
+    els.skeletonSub.textContent = t("skeletonSub").replace("{sec}", style.avgShotSec);
 
     const projectForDisplay = { ...project, framework: project.framework || activeFrameworkKey };
     renderReadiness(computeReadiness(style, project));
@@ -706,7 +822,7 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
 
   // wire up remaining inputs to re-render
   [
-    "talentEthnicity","talentGender","talentAge","talentRole","deliveryPrimary","mood",
+    "talentEthnicity","talentGender","talentAge","talentRole","deliveryPrimary","mood","avgShotSec",
     "tool","platform","projectName","location","audience","objective","priceInfo",
     "sizeInfo","furnishing","lengthSec","framework"
   ].forEach(id => {
