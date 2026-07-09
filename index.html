@@ -10,6 +10,23 @@
 </head>
 <body>
 
+<div class="gate" id="gate">
+  <form class="gate-card" id="gateForm">
+    <div class="lang-toggle gate-lang" id="gateLangToggle" role="group" aria-label="Language">
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="zh">中文</button>
+    </div>
+    <span class="brand-mark">SC.02</span>
+    <h1 data-i18n="gateTitle">AI Video Prompt Wizard</h1>
+    <p class="gate-sub" data-i18n="gateSub">This tool is shared privately. Enter the password to continue.</p>
+    <input type="password" id="gatePassword" class="gate-input" data-i18n-placeholder="gatePlaceholder" placeholder="Password" autocomplete="off">
+    <button type="submit" class="btn btn-primary gate-submit" data-i18n="gateSubmit">Unlock</button>
+    <p class="gate-error" id="gateError" data-i18n="gateError" hidden>Wrong password — try again.</p>
+  </form>
+</div>
+
+<div id="appRoot" hidden>
+
 <header class="topbar">
   <div class="topbar-inner">
     <div class="brand">
@@ -300,6 +317,8 @@
 </footer>
 
 <div class="toast" id="toast"></div>
+
+</div>
 
 <script src="app.js"></script>
 </body>

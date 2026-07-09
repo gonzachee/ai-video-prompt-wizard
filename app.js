@@ -3,6 +3,8 @@
 
   const STYLE_KEY = "aivpw_style_v1";
   const LANG_KEY = "aivpw_lang";
+  const GATE_KEY = "aivpw_unlocked";
+  const PASSWORD_HASH = "71b82e0e5777d9aada2dd299c2b37f514f8bd253f48b517c81d9c670a685b702";
 
   // ---------------------------------------------------------------------
   // i18n dictionary — Chinese terms reused verbatim from the original
@@ -16,6 +18,10 @@
       eyebrow: "Property ad videos · Seedance 2.0 & friends",
       introH1: "Answer once, reuse the brief every time.",
       introDek: "This assembles the exact master prompt from the 12-step brief method — framework, triggers, camera rules, negative prompt, and a scene-timing skeleton — so nothing incomplete burns a Seedance credit. Paste the result into ChatGPT to get the creative scene text, then into Seedance as usual.",
+      gateTitle: "AI Video Prompt Wizard",
+      gateSub: "This tool is shared privately. Enter the password to continue.",
+      gatePlaceholder: "Password", gateSubmit: "Unlock",
+      gateError: "Wrong password — try again.",
       tabStyle: "Style", tabProject: "Project", tabReview: "Review & Generate",
       btnNextProject: "Next: This Project", btnBackStyle: "Style", btnNextReview: "Next: Review & Generate", btnBackProject: "Project",
       phaseATag: "Phase A · set once",
@@ -100,6 +106,10 @@
       eyebrow: "房地产广告视频 · Seedance 2.0 及其他平台",
       introH1: "设定一次，往后每支视频都能复用。",
       introDek: "本工具会按照 12 步简报法组装完整主提示词——框架、触发点、镜头规则、负面提示，以及场景时长骨架——确保不会用不完整的提示词浪费 Seedance 额度。生成结果请粘贴给 ChatGPT 获取创意场景文本，再照常喂给 Seedance。",
+      gateTitle: "AI 视频提示词向导",
+      gateSub: "此工具为私下分享内容，请输入密码继续。",
+      gatePlaceholder: "密码", gateSubmit: "解锁",
+      gateError: "密码错误 — 请再试一次。",
       tabStyle: "风格设定", tabProject: "本次项目", tabReview: "审核并生成",
       btnNextProject: "下一步：本次项目", btnBackStyle: "风格设定", btnNextReview: "下一步：审核并生成", btnBackProject: "本次项目",
       phaseATag: "第一阶段 · 预设",
@@ -229,6 +239,12 @@
     langToggle: document.getElementById("langToggle"),
     readinessBadge: document.getElementById("readinessBadge"),
 
+    gate: document.getElementById("gate"),
+    gateForm: document.getElementById("gateForm"),
+    gatePassword: document.getElementById("gatePassword"),
+    gateError: document.getElementById("gateError"),
+    appRoot: document.getElementById("appRoot"),
+
     tabbar: document.getElementById("tabbar"),
     panelStyle: document.getElementById("panelStyle"),
     panelProject: document.getElementById("panelProject"),
@@ -321,11 +337,12 @@
     document.querySelectorAll("[data-i18n-placeholder]").forEach(node => {
       node.placeholder = t(node.dataset.i18nPlaceholder);
     });
-    els.langToggle.querySelectorAll(".lang-btn").forEach(btn => {
+    document.querySelectorAll(".lang-toggle .lang-btn").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.lang === lang);
     });
   }
-  els.langToggle.addEventListener("click", (ev) => {
+  // delegated so it covers both the gate's language toggle and the app's
+  document.addEventListener("click", (ev) => {
     const btn = ev.target.closest(".lang-btn");
     if (!btn) return;
     lang = btn.dataset.lang;
@@ -731,6 +748,31 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
     toastTimer = setTimeout(() => els.toast.classList.remove("show"), 2600);
   }
 
+  // ---------- Password gate ----------
+  async function sha256Hex(text){
+    const data = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+  function unlockApp(){
+    els.gate.classList.add("unlocking");
+    els.appRoot.hidden = false;
+    setTimeout(() => { els.gate.hidden = true; }, 250);
+  }
+  els.gateForm.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const hash = await sha256Hex(els.gatePassword.value);
+    if (hash === PASSWORD_HASH) {
+      localStorage.setItem(GATE_KEY, "1");
+      els.gateError.hidden = true;
+      unlockApp();
+    } else {
+      els.gateError.hidden = false;
+      els.gatePassword.value = "";
+      els.gatePassword.focus();
+    }
+  });
+
   // init
   resetStyle();
   applyStaticTranslations();
@@ -739,4 +781,11 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
   if (savedRaw) applyStyle(JSON.parse(savedRaw));
   setActiveTab("style");
   render();
+
+  if (localStorage.getItem(GATE_KEY) === "1") {
+    els.appRoot.hidden = false;
+    els.gate.hidden = true;
+  } else {
+    els.gatePassword.focus();
+  }
 })();
