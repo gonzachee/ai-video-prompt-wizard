@@ -2,6 +2,187 @@
   "use strict";
 
   const STYLE_KEY = "aivpw_style_v1";
+  const LANG_KEY = "aivpw_lang";
+
+  // ---------------------------------------------------------------------
+  // i18n dictionary — Chinese terms reused verbatim from the original
+  // workshop slides (Module 1 + Ad Video Frameworks) for consistency.
+  // ---------------------------------------------------------------------
+  const I18N = {
+    en: {
+      brandName: "AI Video Prompt Wizard",
+      saveStateEmpty: "Style not saved yet",
+      saveStateSaved: "Style saved on this device",
+      eyebrow: "Property ad videos · Seedance 2.0 & friends",
+      introH1: "Answer once, reuse the brief every time.",
+      introDek: "This assembles the exact master prompt from the 12-step brief method — framework, triggers, camera rules, negative prompt, and a scene-timing skeleton — so nothing incomplete burns a Seedance credit. Paste the result into ChatGPT to get the creative scene text, then into Seedance as usual.",
+      phaseATag: "Phase A · set once",
+      phaseATitle: "Your Reusable Style",
+      phaseASub: "Steps 1–8 of the brief. Save this once and every future project inherits it.",
+      lblEthnicity: "Talent — ethnicity", phEthnicity: "e.g. Chinese, Malay, Indian",
+      lblGender: "Talent — gender", optMale: "Male", optFemale: "Female",
+      lblAge: "Talent — age range", phAge: "e.g. Late 40s to 50s",
+      lblRole: "Talent — role", phRole: "e.g. Property agent",
+      lblPersonality: "Talent — personality (pick 2–3)",
+      chipConfident: "Confident", chipProfessional: "Professional", chipWarm: "Warm",
+      chipAttractive: "Attractive", chipPlayful: "Playful", chipAuthoritative: "Authoritative",
+      fixedRulesTitle: "Locked camera & delivery rules", fixedRulesBadge: "always applied",
+      fixedRule1: "Camera follows with motion during dialogue — never fixed. Short shots, frequent angle changes.",
+      fixedRule2: "Walking is default; stop only on the one line worth emphasizing.",
+      fixedRule3: "3-beat entry: walk 1–2s → look to camera → then speak.",
+      fixedRule4: "Natural expressions and hand gestures throughout.",
+      lblDelivery: "Delivery — primary mode", optFaceCam: "Face-to-camera (prioritised)", optVO: "Voice over (prioritised)",
+      lblMood: "Mood / tone", moodLuxury: "Luxury", moodEnergetic: "Energetic", moodCozy: "Cozy", moodPlayful: "Playful", moodCalm: "Calm",
+      lblRatio: "Lifestyle b-roll vs. talk ratio —",
+      lblNegative: "Negative prompt — excluded from every generation",
+      neg1: "No subtitles / on-screen text", neg2: "No background music", neg3: "No sound effects",
+      neg4: "No static camera during talk", neg5: "No stiff / robotic delivery", neg6: "No boring opening shot",
+      btnSaveStyle: "Save style as default", btnLoadStyle: "Load saved style", btnResetStyle: "Reset to blank",
+      phaseBTag: "Phase B · per project", phaseBTitle: "This Project",
+      phaseBSub: "Steps 9–12 of the brief. Everything here changes for every new property.",
+      lblTool: "Generation tool", lblPlatform: "Platform",
+      platIG: "Instagram Reel", platTikTok: "TikTok", platFB: "Facebook", platYT: "YouTube", platWA: "WhatsApp / Website",
+      lblProjectName: "Project name", phProjectName: "e.g. The Astaka, Bukit Jalil",
+      lblLocation: "Location", phLocation: "e.g. Bukit Jalil, Kuala Lumpur",
+      lblAudience: "Target audience", phAudience: "e.g. Malaysians who want to live in or invest in Bukit Jalil",
+      lblObjective: "Objective — what should the viewer do?", phObjective: "e.g. Trigger buying interest and get viewers to sign up with us",
+      lblPrice: "Price / instalment", phPrice: "e.g. from RM 3,300/month",
+      lblSize: "Size / layout", phSize: "e.g. 732–1,001 sqft, 2–3 bed",
+      lblFurnishing: "Furnishing", phFurnishing: "e.g. Partially furnished, smart-home",
+      lblLength: "Video length", len30: "30 seconds", len45: "45 seconds", len60: "60 seconds", len90: "90 seconds",
+      lblUsps: "Key selling points (USPs)", btnAddUsp: "+ Add selling point", uspPlaceholder: "e.g. Walkable to LRT",
+      lblFramework: "Framework", tipSuggested: "Suggested", btnUseThis: "Use this",
+      fwChoose: "— choose a framework —",
+      fwAIDA: "AIDA — Attention · Interest · Desire · Action (safe default)",
+      fwPAS: "PAS — Problem · Agitate · Solution (clear buyer pain)",
+      fwFFAB: "FFAB — Feature · Function · Advantage · Benefit (one strong feature)",
+      fwBAB: "BAB — Before · After · Bridge (aspirational upgrade)",
+      fw4P: "4 P's — Picture · Promise · Prove · Push (fast promo)",
+      fwHSO: "Hook–Story–Offer (short social reel, cold audience)",
+      fwPASTOR: "PASTOR — Problem·Amplify·Story·Transformation·Offer·Response (brand film)",
+      lblTriggers: "Psychological triggers (pick 2–3)",
+      trigFOMO: "FOMO", trigScarcity: "Scarcity", trigUrgency: "Urgency",
+      trigSocialProof: "Social Proof", trigAuthority: "Authority", trigAnchoring: "Anchoring",
+      btnNewProject: "New project (clears this section only)",
+      readinessTitle: "Readiness check",
+      skeletonTitle: "Scene-timing skeleton",
+      skeletonSub: "Auto-split by framework stage weighting and an ~7s average shot length.",
+      promptTitle: "Assembled prompt", btnCopy: "Copy prompt",
+      promptNote: "Always assembled in English — AI video tools parse English prompts most reliably.",
+      footer: "Built from the 8 July 2026 AI Video Prompt Workshop method. Runs entirely in your browser — nothing is sent anywhere.",
+      toastStyleSaved: "Style saved — it'll load automatically next time.",
+      toastNoSavedStyle: "No saved style yet.",
+      toastStyleLoaded: "Saved style loaded.",
+      toastProjectCleared: "Project fields cleared. Style kept.",
+      toastCopied: "Prompt copied — paste it into ChatGPT.",
+      toastCopyFailed: "Couldn't copy automatically — select the text and copy manually.",
+      rTalent: "Talent defined", rPersonality: "2–3 personality traits chosen",
+      rGoal: "Goal & audience described", rFramework: "Framework chosen",
+      rTriggers: "2–3 triggers selected", rProjectBasics: "Project name & location set",
+      rUsps: "At least 3 selling points listed", rNegative: "Negative prompt confirmed",
+      recColdSocial: "short reel + cold scrolling audience is exactly what Hook-Story-Offer is built for.",
+      recTestimonial: "you're leaning on a story or testimonial, which PASTOR is built to carry.",
+      recPain: "your audience description names a clear pain point — PAS (or BAB) turns that into a strong hook.",
+      recFeature: "you're centered on one strong feature — FFAB turns a spec into a reason to buy.",
+      recDefault: "no strong signal either way — AIDA is the safest default and rarely fails.",
+      shotWord: "shot", shotWordPlural: "shots", triggerWord: "trigger",
+    },
+    zh: {
+      brandName: "AI 视频提示词向导",
+      saveStateEmpty: "尚未保存风格",
+      saveStateSaved: "风格已保存在本设备",
+      eyebrow: "房地产广告视频 · Seedance 2.0 及其他平台",
+      introH1: "设定一次，往后每支视频都能复用。",
+      introDek: "本工具会按照 12 步简报法组装完整主提示词——框架、触发点、镜头规则、负面提示，以及场景时长骨架——确保不会用不完整的提示词浪费 Seedance 额度。生成结果请粘贴给 ChatGPT 获取创意场景文本，再照常喂给 Seedance。",
+      phaseATag: "第一阶段 · 预设",
+      phaseATitle: "你的可复用风格",
+      phaseASub: "对应简报的第 1–8 步。设定一次，之后每个新项目都会继承。",
+      lblEthnicity: "出镜模特 — 族裔", phEthnicity: "例如：华裔、马来裔、印裔",
+      lblGender: "出镜模特 — 性别", optMale: "男性", optFemale: "女性",
+      lblAge: "出镜模特 — 年龄范围", phAge: "例如：四十多岁到五十岁",
+      lblRole: "出镜模特 — 角色", phRole: "例如：房地产经纪",
+      lblPersonality: "出镜模特 — 性格（选 2–3 个）",
+      chipConfident: "自信", chipProfessional: "专业", chipWarm: "温暖",
+      chipAttractive: "有魅力", chipPlayful: "活泼", chipAuthoritative: "权威",
+      fixedRulesTitle: "锁定的镜头与表达规则", fixedRulesBadge: "始终套用",
+      fixedRule1: "对话时镜头始终带着运动跟拍——绝不固定。镜头短、常换角度。",
+      fixedRule2: "默认走动；只在最值得强调的那句台词时停下来。",
+      fixedRule3: "三节拍开场：先走 1–2 秒 → 看向镜头 → 再开口说话。",
+      fixedRule4: "全程加入自然的表情与手势。",
+      lblDelivery: "表达方式 — 主要模式", optFaceCam: "对镜说话（优先）", optVO: "旁白配音（优先）",
+      lblMood: "氛围 / 基调", moodLuxury: "奢华", moodEnergetic: "充满活力", moodCozy: "温馨", moodPlayful: "活泼", moodCalm: "平静",
+      lblRatio: "生活空镜与对话的比例 —",
+      lblNegative: "负面提示 — 每次生成都会排除",
+      neg1: "不要字幕／画面文字", neg2: "不要背景音乐", neg3: "不要音效",
+      neg4: "讲话时不要固定镜头", neg5: "不要僵硬 / 机械式的表达", neg6: "不要无聊的开场镜头",
+      btnSaveStyle: "保存为默认风格", btnLoadStyle: "载入已保存的风格", btnResetStyle: "重置为空白",
+      phaseBTag: "第二阶段 · 每个项目", phaseBTitle: "本次项目",
+      phaseBSub: "对应简报的第 9–12 步。每个新楼盘都要重新填写这部分。",
+      lblTool: "生成工具", lblPlatform: "投放平台",
+      platIG: "Instagram Reel", platTikTok: "TikTok", platFB: "Facebook", platYT: "YouTube", platWA: "WhatsApp / 网站",
+      lblProjectName: "项目名称", phProjectName: "例如：The Astaka, Bukit Jalil",
+      lblLocation: "地点", phLocation: "例如：武吉加里尔（Bukit Jalil），吉隆坡",
+      lblAudience: "目标受众", phAudience: "例如：想在武吉加里尔居住或投资的马来西亚人",
+      lblObjective: "目的 — 希望观众采取什么行动？", phObjective: "例如：激发购买兴趣，让观众向我们登记",
+      lblPrice: "价格 / 月供", phPrice: "例如：月供从 RM 3,300 起",
+      lblSize: "面积 / 户型", phSize: "例如：732–1,001 平方尺，2–3 房",
+      lblFurnishing: "装修配置", phFurnishing: "例如：部分家具，智能家居",
+      lblLength: "视频长度", len30: "30 秒", len45: "45 秒", len60: "60 秒", len90: "90 秒",
+      lblUsps: "核心卖点（USP）", btnAddUsp: "+ 新增卖点", uspPlaceholder: "例如：步行可达 LRT",
+      lblFramework: "营销框架", tipSuggested: "建议", btnUseThis: "采用此建议",
+      fwChoose: "— 选择一个框架 —",
+      fwAIDA: "AIDA — 注意·兴趣·欲望·行动（安全默认选项）",
+      fwPAS: "PAS — 问题·加剧·解决（买家有明确痛点时）",
+      fwFFAB: "FFAB — 特征·功能·优势·利益（突出单一强项卖点）",
+      fwBAB: "BAB — 之前·之后·桥梁（向往型生活方式升级）",
+      fw4P: "4 P's — 画面·承诺·证明·推动（快速促销）",
+      fwHSO: "Hook–Story–Offer 钩子-故事-邀约（短社交视频，陌生受众）",
+      fwPASTOR: "PASTOR — 问题·放大·故事·蜕变·邀约·回应（品牌故事片）",
+      lblTriggers: "心理触发点（选 2–3 个）",
+      trigFOMO: "错失恐惧 FOMO", trigScarcity: "稀缺", trigUrgency: "紧迫感",
+      trigSocialProof: "从众效应", trigAuthority: "权威背书", trigAnchoring: "价格锚定",
+      btnNewProject: "新项目（仅清空本区块）",
+      readinessTitle: "就绪检查",
+      skeletonTitle: "场景时长骨架",
+      skeletonSub: "按框架阶段权重与约 7 秒的平均镜头时长自动拆分。",
+      promptTitle: "组装完成的提示词", btnCopy: "复制提示词",
+      promptNote: "提示词始终以英文组装 — AI 视频工具对英文提示词的理解最稳定。",
+      footer: "内容整理自 2026 年 7 月 8 日的 AI 视频提示词工作坊方法论。完全在你的浏览器内运行 — 不会上传到任何地方。",
+      toastStyleSaved: "风格已保存 — 下次会自动载入。",
+      toastNoSavedStyle: "目前还没有已保存的风格。",
+      toastStyleLoaded: "已载入保存的风格。",
+      toastProjectCleared: "项目字段已清空，风格设定保留。",
+      toastCopied: "提示词已复制 — 粘贴给 ChatGPT 吧。",
+      toastCopyFailed: "自动复制失败 — 请手动选取文字后复制。",
+      rTalent: "已定义出镜模特", rPersonality: "已选择 2–3 个性格标签",
+      rGoal: "已填写目标与受众", rFramework: "已选择框架",
+      rTriggers: "已选择 2–3 个触发点", rProjectBasics: "已填写项目名称与地点",
+      rUsps: "已列出至少 3 个卖点", rNegative: "已确认负面提示",
+      recColdSocial: "短社交视频面对陌生滑动受众，正是 Hook-Story-Offer 的强项。",
+      recTestimonial: "你的内容偏向故事或口碑，PASTOR 最适合承载这种叙事。",
+      recPain: "你的受众描述里有明确的痛点——PAS（或 BAB）能把它转化为强有力的钩子。",
+      recFeature: "你聚焦在单一强项卖点——FFAB 能把规格变成购买理由。",
+      recDefault: "没有明显信号——AIDA 是最安全的默认选择，几乎不会失手。",
+      shotWord: "个镜头", shotWordPlural: "个镜头", triggerWord: "触发点",
+    },
+  };
+
+  const STAGE_I18N = {
+    Attention: "注意", Interest: "兴趣", Desire: "欲望", Action: "行动",
+    Problem: "问题", Agitate: "加剧", Solution: "解决",
+    Feature: "特征", Function: "功能", Advantage: "优势", Benefit: "利益",
+    Before: "之前", After: "之后", Bridge: "桥梁",
+    Picture: "画面", Promise: "承诺", Prove: "证明", Push: "推动",
+    Hook: "钩子", Story: "故事", Offer: "邀约",
+    Amplify: "放大", Transformation: "蜕变", Response: "回应",
+  };
+  const TRIGGER_I18N = {
+    FOMO: "错失恐惧", Scarcity: "稀缺", Urgency: "紧迫感",
+    "Social Proof": "从众效应", Authority: "权威背书", Anchoring: "价格锚定",
+  };
+
+  let lang = localStorage.getItem(LANG_KEY) || "en";
+  function t(key){ return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key; }
 
   const els = {
     talentEthnicity: document.getElementById("talentEthnicity"),
@@ -18,6 +199,7 @@
     loadStyleBtn: document.getElementById("loadStyleBtn"),
     resetStyleBtn: document.getElementById("resetStyleBtn"),
     saveState: document.getElementById("saveState"),
+    langToggle: document.getElementById("langToggle"),
 
     tool: document.getElementById("tool"),
     platform: document.getElementById("platform"),
@@ -64,6 +246,31 @@
     return e;
   }
 
+  // ---------- Static translation pass ----------
+  function applyStaticTranslations(){
+    document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+    document.querySelectorAll("[data-i18n]").forEach(node => {
+      node.textContent = t(node.dataset.i18n);
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(node => {
+      node.placeholder = t(node.dataset.i18nPlaceholder);
+    });
+    els.langToggle.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.lang === lang);
+    });
+  }
+  els.langToggle.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".lang-btn");
+    if (!btn) return;
+    lang = btn.dataset.lang;
+    localStorage.setItem(LANG_KEY, lang);
+    applyStaticTranslations();
+    updateSaveState();
+    // refresh dynamic placeholders on existing USP rows
+    els.uspList.querySelectorAll("input").forEach(i => { i.placeholder = t("uspPlaceholder"); });
+    render();
+  });
+
   // ---------- Chip pickers ----------
   function setupChipPicker(container, maxCount){
     container.addEventListener("click", (ev) => {
@@ -95,7 +302,7 @@
     const row = el("div", "usp-row");
     const input = el("input");
     input.type = "text";
-    input.placeholder = "e.g. Walkable to LRT";
+    input.placeholder = t("uspPlaceholder");
     input.value = value || "";
     input.addEventListener("input", render);
     const remove = el("button", "usp-remove", "×");
@@ -142,14 +349,14 @@
   function saveStyle(){
     localStorage.setItem(STYLE_KEY, JSON.stringify(collectStyle()));
     updateSaveState();
-    showToast("Style saved — it'll load automatically next time.");
+    showToast(t("toastStyleSaved"));
   }
   function loadStyle(){
     const raw = localStorage.getItem(STYLE_KEY);
-    if (!raw) { showToast("No saved style yet."); return; }
+    if (!raw) { showToast(t("toastNoSavedStyle")); return; }
     applyStyle(JSON.parse(raw));
     render();
-    showToast("Saved style loaded.");
+    showToast(t("toastStyleLoaded"));
   }
   function resetStyle(){
     applyStyle({ negatives: ["No subtitles / on-screen text","No background music","No sound effects","No static camera during talk","No stiff / robotic delivery","No boring opening shot"] });
@@ -158,7 +365,7 @@
   }
   function updateSaveState(){
     const raw = localStorage.getItem(STYLE_KEY);
-    els.saveState.textContent = raw ? "Style saved on this device" : "Style not saved yet";
+    els.saveState.textContent = raw ? t("saveStateSaved") : t("saveStateEmpty");
   }
 
   els.saveStyleBtn.addEventListener("click", saveStyle);
@@ -171,7 +378,7 @@
     els.framework.value = "";
     setChipValues(els.triggerChips, []);
     render();
-    showToast("Project fields cleared. Style kept.");
+    showToast(t("toastProjectCleared"));
   });
 
   els.ratioBroll.addEventListener("input", () => {
@@ -188,11 +395,11 @@
     const testimonialWords = ["testimonial","client","review","story","success"];
     const coldSocial = (project.platform === "TikTok" || project.platform === "Instagram Reel") && Number(project.lengthSec) <= 30;
 
-    if (coldSocial) return { key: "HSO", reason: "short reel + cold scrolling audience is exactly what Hook-Story-Offer is built for." };
-    if (testimonialWords.some(w => blob.includes(w))) return { key: "PASTOR", reason: "you're leaning on a story or testimonial, which PASTOR is built to carry." };
-    if (painWords.some(w => blob.includes(w))) return { key: "PAS", reason: "your audience description names a clear pain point — PAS (or BAB) turns that into a strong hook." };
-    if (featureWords.some(w => blob.includes(w))) return { key: "FFAB", reason: "you're centered on one strong feature — FFAB turns a spec into a reason to buy." };
-    return { key: "AIDA", reason: "no strong signal either way — AIDA is the safest default and rarely fails." };
+    if (coldSocial) return { key: "HSO", reasonKey: "recColdSocial" };
+    if (testimonialWords.some(w => blob.includes(w))) return { key: "PASTOR", reasonKey: "recTestimonial" };
+    if (painWords.some(w => blob.includes(w))) return { key: "PAS", reasonKey: "recPain" };
+    if (featureWords.some(w => blob.includes(w))) return { key: "FFAB", reasonKey: "recFeature" };
+    return { key: "AIDA", reasonKey: "recDefault" };
   }
 
   // ---------- Scene skeleton ----------
@@ -219,7 +426,6 @@
           trigger = has.length ? has.join(" + ") : (triggers[triggers.length-1] || "");
         }
       } else {
-        // spread remaining triggers across the middle stages
         const mid = Math.floor(meta.stages.length / 2);
         if (idx === mid && triggers[0]) trigger = triggers[0];
         if (idx === meta.stages.length - 1 && triggers[1]) trigger = triggers[1];
@@ -229,14 +435,22 @@
     return rows;
   }
 
+  function translateTriggerLabel(triggerStr){
+    if (!triggerStr) return "";
+    return triggerStr.split(" + ").map(part => TRIGGER_I18N[part] || part).join(" + ");
+  }
+
   function renderSkeleton(rows){
     els.skeletonOutput.innerHTML = "";
     rows.forEach(r => {
       const row = el("div", "sk-row");
       const time = el("span", "sk-time", `${r.start}–${r.end}s`);
       const body = el("div");
-      const stage = el("span", "sk-stage", r.name.toUpperCase());
-      const note = el("span", "sk-note", `${r.shots} shot${r.shots > 1 ? "s" : ""}${r.trigger ? " · trigger: " + r.trigger : ""}`);
+      const stageName = lang === "zh" ? (STAGE_I18N[r.name] || r.name) : r.name;
+      const stage = el("span", "sk-stage", stageName.toUpperCase ? (lang === "zh" ? stageName : stageName.toUpperCase()) : stageName);
+      const shotLabel = lang === "zh" ? `${r.shots} ${t("shotWord")}` : `${r.shots} shot${r.shots > 1 ? "s" : ""}`;
+      const triggerLabel = r.trigger ? ` · ${t("triggerWord")}: ${lang === "zh" ? translateTriggerLabel(r.trigger) : r.trigger}` : "";
+      const note = el("span", "sk-note", `${shotLabel}${triggerLabel}`);
       body.appendChild(stage);
       body.appendChild(note);
       row.appendChild(time);
@@ -249,14 +463,14 @@
   function computeReadiness(style, project){
     const triggerCount = getChipValues(els.triggerChips).length;
     return [
-      { label: "Talent defined", ok: !!(style.talentEthnicity && style.talentAge && style.talentRole) },
-      { label: "2–3 personality traits chosen", ok: style.personality.length >= 2 && style.personality.length <= 3 },
-      { label: "Goal & audience described", ok: !!(project.audience && project.objective) },
-      { label: "Framework chosen", ok: !!project.framework },
-      { label: "2–3 triggers selected", ok: triggerCount >= 2 && triggerCount <= 3 },
-      { label: "Project name & location set", ok: !!(project.projectName && project.location) },
-      { label: "At least 3 selling points listed", ok: project.usps.length >= 3 },
-      { label: "Negative prompt confirmed", ok: style.negatives.length >= 4 },
+      { key: "rTalent", ok: !!(style.talentEthnicity && style.talentAge && style.talentRole) },
+      { key: "rPersonality", ok: style.personality.length >= 2 && style.personality.length <= 3 },
+      { key: "rGoal", ok: !!(project.audience && project.objective) },
+      { key: "rFramework", ok: !!project.framework },
+      { key: "rTriggers", ok: triggerCount >= 2 && triggerCount <= 3 },
+      { key: "rProjectBasics", ok: !!(project.projectName && project.location) },
+      { key: "rUsps", ok: project.usps.length >= 3 },
+      { key: "rNegative", ok: style.negatives.length >= 4 },
     ];
   }
 
@@ -266,12 +480,12 @@
       const li = el("li", it.ok ? "ok" : "bad");
       const dot = el("span", "readiness-dot");
       li.appendChild(dot);
-      li.appendChild(document.createTextNode(it.label));
+      li.appendChild(document.createTextNode(t(it.key)));
       els.readinessList.appendChild(li);
     });
   }
 
-  // ---------- Prompt assembly ----------
+  // ---------- Prompt assembly (always English) ----------
   function buildPrompt(style, project, skeleton){
     const personality = style.personality.join("/").toLowerCase() || "confident/professional";
     const uspLine = project.usps.length ? project.usps.join(" · ") : "[add your selling points]";
@@ -347,7 +561,7 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
       const rec = recommendFramework(project);
       if (!project.framework || project.framework !== rec.key) {
         els.frameworkTip.hidden = false;
-        els.frameworkTipText.textContent = `${FRAMEWORK_META[rec.key].name} — ${rec.reason}`;
+        els.frameworkTipText.textContent = `${FRAMEWORK_META[rec.key].name} — ${t(rec.reasonKey)}`;
         els.acceptFrameworkBtn.onclick = () => { els.framework.value = rec.key; render(); };
       } else {
         els.frameworkTip.hidden = true;
@@ -381,9 +595,9 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
   els.copyBtn.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(els.promptOutput.textContent);
-      showToast("Prompt copied — paste it into ChatGPT.");
+      showToast(t("toastCopied"));
     } catch (e) {
-      showToast("Couldn't copy automatically — select the text and copy manually.");
+      showToast(t("toastCopyFailed"));
     }
   });
 
@@ -397,6 +611,7 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
 
   // init
   resetStyle();
+  applyStaticTranslations();
   updateSaveState();
   const savedRaw = localStorage.getItem(STYLE_KEY);
   if (savedRaw) applyStyle(JSON.parse(savedRaw));

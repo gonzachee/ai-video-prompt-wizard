@@ -14,10 +14,14 @@
   <div class="topbar-inner">
     <div class="brand">
       <span class="brand-mark">SC.02</span>
-      <span class="brand-name">AI Video Prompt Wizard</span>
+      <span class="brand-name" data-i18n="brandName">AI Video Prompt Wizard</span>
     </div>
     <div class="topbar-actions">
-      <span class="save-state" id="saveState">Style not saved yet</span>
+      <span class="save-state" id="saveState" data-i18n="saveStateEmpty">Style not saved yet</span>
+      <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+        <button type="button" class="lang-btn" data-lang="zh">中文</button>
+      </div>
     </div>
   </div>
 </header>
@@ -26,213 +30,213 @@
   <div class="form-col">
 
     <div class="intro">
-      <p class="eyebrow">Property ad videos · Seedance 2.0 &amp; friends</p>
-      <h1>Answer once, reuse the brief every time.</h1>
-      <p class="intro-dek">This assembles the exact master prompt from the 12-step brief method — framework, triggers, camera rules, negative prompt, and a scene-timing skeleton — so nothing incomplete burns a Seedance credit. Paste the result into ChatGPT to get the creative scene text, then into Seedance as usual.</p>
+      <p class="eyebrow" data-i18n="eyebrow">Property ad videos · Seedance 2.0 &amp; friends</p>
+      <h1 data-i18n="introH1">Answer once, reuse the brief every time.</h1>
+      <p class="intro-dek" data-i18n="introDek">This assembles the exact master prompt from the 12-step brief method — framework, triggers, camera rules, negative prompt, and a scene-timing skeleton — so nothing incomplete burns a Seedance credit. Paste the result into ChatGPT to get the creative scene text, then into Seedance as usual.</p>
     </div>
 
     <!-- PHASE A -->
     <section class="panel" id="phaseA">
       <div class="panel-head">
-        <span class="phase-tag phase-a">Phase A · set once</span>
-        <h2>Your Reusable Style</h2>
-        <p class="panel-sub">Steps 1–8 of the brief. Save this once and every future project inherits it.</p>
+        <span class="phase-tag phase-a" data-i18n="phaseATag">Phase A · set once</span>
+        <h2 data-i18n="phaseATitle">Your Reusable Style</h2>
+        <p class="panel-sub" data-i18n="phaseASub">Steps 1–8 of the brief. Save this once and every future project inherits it.</p>
       </div>
 
       <div class="field-grid">
         <label class="field">
-          <span class="field-label">Talent — ethnicity</span>
-          <input type="text" id="talentEthnicity" placeholder="e.g. Chinese, Malay, Indian">
+          <span class="field-label" data-i18n="lblEthnicity">Talent — ethnicity</span>
+          <input type="text" id="talentEthnicity" data-i18n-placeholder="phEthnicity" placeholder="e.g. Chinese, Malay, Indian">
         </label>
         <label class="field">
-          <span class="field-label">Talent — gender</span>
+          <span class="field-label" data-i18n="lblGender">Talent — gender</span>
           <select id="talentGender">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
+            <option value="Male" data-i18n="optMale">Male</option>
+            <option value="Female" data-i18n="optFemale">Female</option>
           </select>
         </label>
         <label class="field">
-          <span class="field-label">Talent — age range</span>
-          <input type="text" id="talentAge" placeholder="e.g. Late 40s to 50s">
+          <span class="field-label" data-i18n="lblAge">Talent — age range</span>
+          <input type="text" id="talentAge" data-i18n-placeholder="phAge" placeholder="e.g. Late 40s to 50s">
         </label>
         <label class="field">
-          <span class="field-label">Talent — role</span>
-          <input type="text" id="talentRole" placeholder="e.g. Property agent">
+          <span class="field-label" data-i18n="lblRole">Talent — role</span>
+          <input type="text" id="talentRole" data-i18n-placeholder="phRole" placeholder="e.g. Property agent">
         </label>
       </div>
 
       <div class="field">
-        <span class="field-label">Talent — personality (pick 2–3)</span>
+        <span class="field-label" data-i18n="lblPersonality">Talent — personality (pick 2–3)</span>
         <div class="chip-picker" id="personalityChips" data-max="3">
-          <button type="button" class="chip" data-value="Confident">Confident</button>
-          <button type="button" class="chip" data-value="Professional">Professional</button>
-          <button type="button" class="chip" data-value="Warm">Warm</button>
-          <button type="button" class="chip" data-value="Attractive">Attractive</button>
-          <button type="button" class="chip" data-value="Playful">Playful</button>
-          <button type="button" class="chip" data-value="Authoritative">Authoritative</button>
+          <button type="button" class="chip" data-value="Confident" data-i18n="chipConfident">Confident</button>
+          <button type="button" class="chip" data-value="Professional" data-i18n="chipProfessional">Professional</button>
+          <button type="button" class="chip" data-value="Warm" data-i18n="chipWarm">Warm</button>
+          <button type="button" class="chip" data-value="Attractive" data-i18n="chipAttractive">Attractive</button>
+          <button type="button" class="chip" data-value="Playful" data-i18n="chipPlayful">Playful</button>
+          <button type="button" class="chip" data-value="Authoritative" data-i18n="chipAuthoritative">Authoritative</button>
         </div>
       </div>
 
       <div class="fixed-rules">
-        <p class="fixed-rules-title">Locked camera &amp; delivery rules <span class="fixed-badge">always applied</span></p>
+        <p class="fixed-rules-title"><span data-i18n="fixedRulesTitle">Locked camera &amp; delivery rules</span> <span class="fixed-badge" data-i18n="fixedRulesBadge">always applied</span></p>
         <ul>
-          <li>Camera follows with motion during dialogue — never fixed. Short shots, frequent angle changes.</li>
-          <li>Walking is default; stop only on the one line worth emphasizing.</li>
-          <li>3-beat entry: walk 1–2s → look to camera → then speak.</li>
-          <li>Natural expressions and hand gestures throughout.</li>
+          <li data-i18n="fixedRule1">Camera follows with motion during dialogue — never fixed. Short shots, frequent angle changes.</li>
+          <li data-i18n="fixedRule2">Walking is default; stop only on the one line worth emphasizing.</li>
+          <li data-i18n="fixedRule3">3-beat entry: walk 1–2s → look to camera → then speak.</li>
+          <li data-i18n="fixedRule4">Natural expressions and hand gestures throughout.</li>
         </ul>
       </div>
 
       <div class="field-grid">
         <label class="field">
-          <span class="field-label">Delivery — primary mode</span>
+          <span class="field-label" data-i18n="lblDelivery">Delivery — primary mode</span>
           <select id="deliveryPrimary">
-            <option value="Face-to-camera">Face-to-camera (prioritised)</option>
-            <option value="Voice over">Voice over (prioritised)</option>
+            <option value="Face-to-camera" data-i18n="optFaceCam">Face-to-camera (prioritised)</option>
+            <option value="Voice over" data-i18n="optVO">Voice over (prioritised)</option>
           </select>
         </label>
         <label class="field">
-          <span class="field-label">Mood / tone</span>
+          <span class="field-label" data-i18n="lblMood">Mood / tone</span>
           <select id="mood">
-            <option value="Luxury">Luxury</option>
-            <option value="Energetic">Energetic</option>
-            <option value="Cozy">Cozy</option>
-            <option value="Playful">Playful</option>
-            <option value="Calm">Calm</option>
+            <option value="Luxury" data-i18n="moodLuxury">Luxury</option>
+            <option value="Energetic" data-i18n="moodEnergetic">Energetic</option>
+            <option value="Cozy" data-i18n="moodCozy">Cozy</option>
+            <option value="Playful" data-i18n="moodPlayful">Playful</option>
+            <option value="Calm" data-i18n="moodCalm">Calm</option>
           </select>
         </label>
       </div>
 
       <div class="field">
-        <span class="field-label">Lifestyle b-roll vs. talk ratio — <span id="ratioReadout">70% b-roll / 30% talk</span></span>
+        <span class="field-label"><span data-i18n="lblRatio">Lifestyle b-roll vs. talk ratio —</span> <span id="ratioReadout">70% b-roll / 30% talk</span></span>
         <input type="range" id="ratioBroll" min="40" max="90" value="70" step="5">
       </div>
 
       <div class="field">
-        <span class="field-label">Negative prompt — excluded from every generation</span>
+        <span class="field-label" data-i18n="lblNegative">Negative prompt — excluded from every generation</span>
         <div class="neg-grid" id="negativeGrid">
-          <label class="neg-item"><input type="checkbox" data-neg="No subtitles / on-screen text" checked><span>No subtitles / on-screen text</span></label>
-          <label class="neg-item"><input type="checkbox" data-neg="No background music" checked><span>No background music</span></label>
-          <label class="neg-item"><input type="checkbox" data-neg="No sound effects" checked><span>No sound effects</span></label>
-          <label class="neg-item"><input type="checkbox" data-neg="No static camera during talk" checked><span>No static camera during talk</span></label>
-          <label class="neg-item"><input type="checkbox" data-neg="No stiff / robotic delivery" checked><span>No stiff / robotic delivery</span></label>
-          <label class="neg-item"><input type="checkbox" data-neg="No boring opening shot" checked><span>No boring opening shot</span></label>
+          <label class="neg-item"><input type="checkbox" data-neg="No subtitles / on-screen text" checked><span data-i18n="neg1">No subtitles / on-screen text</span></label>
+          <label class="neg-item"><input type="checkbox" data-neg="No background music" checked><span data-i18n="neg2">No background music</span></label>
+          <label class="neg-item"><input type="checkbox" data-neg="No sound effects" checked><span data-i18n="neg3">No sound effects</span></label>
+          <label class="neg-item"><input type="checkbox" data-neg="No static camera during talk" checked><span data-i18n="neg4">No static camera during talk</span></label>
+          <label class="neg-item"><input type="checkbox" data-neg="No stiff / robotic delivery" checked><span data-i18n="neg5">No stiff / robotic delivery</span></label>
+          <label class="neg-item"><input type="checkbox" data-neg="No boring opening shot" checked><span data-i18n="neg6">No boring opening shot</span></label>
         </div>
       </div>
 
       <div class="panel-actions">
-        <button class="btn btn-primary" id="saveStyleBtn">Save style as default</button>
-        <button class="btn btn-ghost" id="loadStyleBtn">Load saved style</button>
-        <button class="btn btn-ghost" id="resetStyleBtn">Reset to blank</button>
+        <button class="btn btn-primary" id="saveStyleBtn" data-i18n="btnSaveStyle">Save style as default</button>
+        <button class="btn btn-ghost" id="loadStyleBtn" data-i18n="btnLoadStyle">Load saved style</button>
+        <button class="btn btn-ghost" id="resetStyleBtn" data-i18n="btnResetStyle">Reset to blank</button>
       </div>
     </section>
 
     <!-- PHASE B -->
     <section class="panel" id="phaseB">
       <div class="panel-head">
-        <span class="phase-tag phase-b">Phase B · per project</span>
-        <h2>This Project</h2>
-        <p class="panel-sub">Steps 9–12 of the brief. Everything here changes for every new property.</p>
+        <span class="phase-tag phase-b" data-i18n="phaseBTag">Phase B · per project</span>
+        <h2 data-i18n="phaseBTitle">This Project</h2>
+        <p class="panel-sub" data-i18n="phaseBSub">Steps 9–12 of the brief. Everything here changes for every new property.</p>
       </div>
 
       <div class="field-grid">
         <label class="field">
-          <span class="field-label">Generation tool</span>
+          <span class="field-label" data-i18n="lblTool">Generation tool</span>
           <input type="text" id="tool" value="Seedance 2.0">
         </label>
         <label class="field">
-          <span class="field-label">Platform</span>
+          <span class="field-label" data-i18n="lblPlatform">Platform</span>
           <select id="platform">
-            <option>Instagram Reel</option>
-            <option>TikTok</option>
-            <option>Facebook</option>
-            <option>YouTube</option>
-            <option>WhatsApp / Website</option>
+            <option value="Instagram Reel" data-i18n="platIG">Instagram Reel</option>
+            <option value="TikTok" data-i18n="platTikTok">TikTok</option>
+            <option value="Facebook" data-i18n="platFB">Facebook</option>
+            <option value="YouTube" data-i18n="platYT">YouTube</option>
+            <option value="WhatsApp / Website" data-i18n="platWA">WhatsApp / Website</option>
           </select>
         </label>
         <label class="field">
-          <span class="field-label">Project name</span>
-          <input type="text" id="projectName" placeholder="e.g. The Astaka, Bukit Jalil">
+          <span class="field-label" data-i18n="lblProjectName">Project name</span>
+          <input type="text" id="projectName" data-i18n-placeholder="phProjectName" placeholder="e.g. The Astaka, Bukit Jalil">
         </label>
         <label class="field">
-          <span class="field-label">Location</span>
-          <input type="text" id="location" placeholder="e.g. Bukit Jalil, Kuala Lumpur">
+          <span class="field-label" data-i18n="lblLocation">Location</span>
+          <input type="text" id="location" data-i18n-placeholder="phLocation" placeholder="e.g. Bukit Jalil, Kuala Lumpur">
         </label>
       </div>
 
       <label class="field">
-        <span class="field-label">Target audience</span>
-        <textarea id="audience" rows="2" placeholder="e.g. Malaysians who want to live in or invest in Bukit Jalil"></textarea>
+        <span class="field-label" data-i18n="lblAudience">Target audience</span>
+        <textarea id="audience" rows="2" data-i18n-placeholder="phAudience" placeholder="e.g. Malaysians who want to live in or invest in Bukit Jalil"></textarea>
       </label>
 
       <label class="field">
-        <span class="field-label">Objective — what should the viewer do?</span>
-        <textarea id="objective" rows="2" placeholder="e.g. Trigger buying interest and get viewers to sign up with us"></textarea>
+        <span class="field-label" data-i18n="lblObjective">Objective — what should the viewer do?</span>
+        <textarea id="objective" rows="2" data-i18n-placeholder="phObjective" placeholder="e.g. Trigger buying interest and get viewers to sign up with us"></textarea>
       </label>
 
       <div class="field-grid">
         <label class="field">
-          <span class="field-label">Price / instalment</span>
-          <input type="text" id="priceInfo" placeholder="e.g. from RM 3,300/month">
+          <span class="field-label" data-i18n="lblPrice">Price / instalment</span>
+          <input type="text" id="priceInfo" data-i18n-placeholder="phPrice" placeholder="e.g. from RM 3,300/month">
         </label>
         <label class="field">
-          <span class="field-label">Size / layout</span>
-          <input type="text" id="sizeInfo" placeholder="e.g. 732–1,001 sqft, 2–3 bed">
+          <span class="field-label" data-i18n="lblSize">Size / layout</span>
+          <input type="text" id="sizeInfo" data-i18n-placeholder="phSize" placeholder="e.g. 732–1,001 sqft, 2–3 bed">
         </label>
         <label class="field">
-          <span class="field-label">Furnishing</span>
-          <input type="text" id="furnishing" placeholder="e.g. Partially furnished, smart-home">
+          <span class="field-label" data-i18n="lblFurnishing">Furnishing</span>
+          <input type="text" id="furnishing" data-i18n-placeholder="phFurnishing" placeholder="e.g. Partially furnished, smart-home">
         </label>
         <label class="field">
-          <span class="field-label">Video length</span>
+          <span class="field-label" data-i18n="lblLength">Video length</span>
           <select id="lengthSec">
-            <option value="30">30 seconds</option>
-            <option value="45">45 seconds</option>
-            <option value="60" selected>60 seconds</option>
-            <option value="90">90 seconds</option>
+            <option value="30" data-i18n="len30">30 seconds</option>
+            <option value="45" data-i18n="len45">45 seconds</option>
+            <option value="60" selected data-i18n="len60">60 seconds</option>
+            <option value="90" data-i18n="len90">90 seconds</option>
           </select>
         </label>
       </div>
 
       <div class="field">
-        <span class="field-label">Key selling points (USPs)</span>
+        <span class="field-label" data-i18n="lblUsps">Key selling points (USPs)</span>
         <div id="uspList" class="usp-list"></div>
-        <button type="button" class="btn btn-ghost btn-small" id="addUspBtn">+ Add selling point</button>
+        <button type="button" class="btn btn-ghost btn-small" id="addUspBtn" data-i18n="btnAddUsp">+ Add selling point</button>
       </div>
 
       <div class="field">
-        <span class="field-label">Framework</span>
+        <span class="field-label" data-i18n="lblFramework">Framework</span>
         <div class="tip-card" id="frameworkTip" hidden>
-          <span class="tip-label">Suggested</span>
+          <span class="tip-label" data-i18n="tipSuggested">Suggested</span>
           <span id="frameworkTipText"></span>
-          <button type="button" class="btn btn-tiny" id="acceptFrameworkBtn">Use this</button>
+          <button type="button" class="btn btn-tiny" id="acceptFrameworkBtn" data-i18n="btnUseThis">Use this</button>
         </div>
         <select id="framework">
-          <option value="">— choose a framework —</option>
-          <option value="AIDA">AIDA — Attention · Interest · Desire · Action (safe default)</option>
-          <option value="PAS">PAS — Problem · Agitate · Solution (clear buyer pain)</option>
-          <option value="FFAB">FFAB — Feature · Function · Advantage · Benefit (one strong feature)</option>
-          <option value="BAB">BAB — Before · After · Bridge (aspirational upgrade)</option>
-          <option value="4P">4 P's — Picture · Promise · Prove · Push (fast promo)</option>
-          <option value="HSO">Hook–Story–Offer (short social reel, cold audience)</option>
-          <option value="PASTOR">PASTOR — Problem·Amplify·Story·Transformation·Offer·Response (brand film)</option>
+          <option value="" data-i18n="fwChoose">— choose a framework —</option>
+          <option value="AIDA" data-i18n="fwAIDA">AIDA — Attention · Interest · Desire · Action (safe default)</option>
+          <option value="PAS" data-i18n="fwPAS">PAS — Problem · Agitate · Solution (clear buyer pain)</option>
+          <option value="FFAB" data-i18n="fwFFAB">FFAB — Feature · Function · Advantage · Benefit (one strong feature)</option>
+          <option value="BAB" data-i18n="fwBAB">BAB — Before · After · Bridge (aspirational upgrade)</option>
+          <option value="4P" data-i18n="fw4P">4 P's — Picture · Promise · Prove · Push (fast promo)</option>
+          <option value="HSO" data-i18n="fwHSO">Hook–Story–Offer (short social reel, cold audience)</option>
+          <option value="PASTOR" data-i18n="fwPASTOR">PASTOR — Problem·Amplify·Story·Transformation·Offer·Response (brand film)</option>
         </select>
       </div>
 
       <div class="field">
-        <span class="field-label">Psychological triggers (pick 2–3)</span>
+        <span class="field-label" data-i18n="lblTriggers">Psychological triggers (pick 2–3)</span>
         <div class="chip-picker" id="triggerChips" data-max="3">
-          <button type="button" class="chip" data-value="FOMO">FOMO</button>
-          <button type="button" class="chip" data-value="Scarcity">Scarcity</button>
-          <button type="button" class="chip" data-value="Urgency">Urgency</button>
-          <button type="button" class="chip" data-value="Social Proof">Social Proof</button>
-          <button type="button" class="chip" data-value="Authority">Authority</button>
-          <button type="button" class="chip" data-value="Anchoring">Anchoring</button>
+          <button type="button" class="chip" data-value="FOMO" data-i18n="trigFOMO">FOMO</button>
+          <button type="button" class="chip" data-value="Scarcity" data-i18n="trigScarcity">Scarcity</button>
+          <button type="button" class="chip" data-value="Urgency" data-i18n="trigUrgency">Urgency</button>
+          <button type="button" class="chip" data-value="Social Proof" data-i18n="trigSocialProof">Social Proof</button>
+          <button type="button" class="chip" data-value="Authority" data-i18n="trigAuthority">Authority</button>
+          <button type="button" class="chip" data-value="Anchoring" data-i18n="trigAnchoring">Anchoring</button>
         </div>
       </div>
 
       <div class="panel-actions">
-        <button class="btn btn-ghost" id="newProjectBtn">New project (clears this section only)</button>
+        <button class="btn btn-ghost" id="newProjectBtn" data-i18n="btnNewProject">New project (clears this section only)</button>
       </div>
     </section>
   </div>
@@ -240,28 +244,29 @@
   <aside class="side-col">
     <div class="sticky-wrap">
       <div class="panel readiness-panel">
-        <h3>Readiness check</h3>
+        <h3 data-i18n="readinessTitle">Readiness check</h3>
         <ul class="readiness-list" id="readinessList"></ul>
       </div>
 
       <div class="panel skeleton-panel">
-        <h3>Scene-timing skeleton</h3>
-        <p class="panel-sub">Auto-split by framework stage weighting and an ~7s average shot length.</p>
+        <h3 data-i18n="skeletonTitle">Scene-timing skeleton</h3>
+        <p class="panel-sub" data-i18n="skeletonSub">Auto-split by framework stage weighting and an ~7s average shot length.</p>
         <div id="skeletonOutput" class="skeleton-output"></div>
       </div>
 
       <div class="panel prompt-panel">
         <div class="prompt-panel-head">
-          <h3>Assembled prompt</h3>
-          <button class="btn btn-primary btn-small" id="copyBtn">Copy prompt</button>
+          <h3 data-i18n="promptTitle">Assembled prompt</h3>
+          <button class="btn btn-primary btn-small" id="copyBtn" data-i18n="btnCopy">Copy prompt</button>
         </div>
+        <p class="prompt-note" data-i18n="promptNote">Always assembled in English — AI video tools parse English prompts most reliably.</p>
         <pre class="prompt-output" id="promptOutput"></pre>
       </div>
     </div>
   </aside>
 </main>
 
-<footer class="site-footer">
+<footer class="site-footer" data-i18n="footer">
   Built from the 8 July 2026 AI Video Prompt Workshop method. Runs entirely in your browser — nothing is sent anywhere.
 </footer>
 
