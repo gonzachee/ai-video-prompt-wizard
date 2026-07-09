@@ -16,6 +16,8 @@
       eyebrow: "Property ad videos · Seedance 2.0 & friends",
       introH1: "Answer once, reuse the brief every time.",
       introDek: "This assembles the exact master prompt from the 12-step brief method — framework, triggers, camera rules, negative prompt, and a scene-timing skeleton — so nothing incomplete burns a Seedance credit. Paste the result into ChatGPT to get the creative scene text, then into Seedance as usual.",
+      tabStyle: "Style", tabProject: "Project", tabReview: "Review & Generate",
+      btnNextProject: "Next: This Project", btnBackStyle: "Style", btnNextReview: "Next: Review & Generate", btnBackProject: "Project",
       phaseATag: "Phase A · set once",
       phaseATitle: "Your Reusable Style",
       phaseASub: "Steps 1–8 of the brief. Save this once and every future project inherits it.",
@@ -67,7 +69,7 @@
       readinessTitle: "Readiness check",
       skeletonTitle: "Scene-timing skeleton",
       skeletonSub: "Auto-split by framework stage weighting and an ~7s average shot length.",
-      promptTitle: "Assembled prompt", btnCopy: "Copy prompt",
+      promptTitle: "Assembled prompt", btnCopy: "Copy prompt", btnDownload: "Download .txt",
       promptNote: "Always assembled in English — AI video tools parse English prompts most reliably.",
       footer: "Built from the 8 July 2026 AI Video Prompt Workshop method. Runs entirely in your browser — nothing is sent anywhere.",
       toastStyleSaved: "Style saved — it'll load automatically next time.",
@@ -76,10 +78,14 @@
       toastProjectCleared: "Project fields cleared. Style kept.",
       toastCopied: "Prompt copied — paste it into ChatGPT.",
       toastCopyFailed: "Couldn't copy automatically — select the text and copy manually.",
+      toastDownloaded: "Prompt downloaded.",
       rTalent: "Talent defined", rPersonality: "2–3 personality traits chosen",
       rGoal: "Goal & audience described", rFramework: "Framework chosen",
       rTriggers: "2–3 triggers selected", rProjectBasics: "Project name & location set",
       rUsps: "At least 3 selling points listed", rNegative: "Negative prompt confirmed",
+      rFix: "Fix",
+      rsLength: "Length", rsPlatform: "Platform", rsFramework: "Framework", rsTriggers: "Triggers",
+      rsUntitled: "Untitled project",
       recColdSocial: "short reel + cold scrolling audience is exactly what Hook-Story-Offer is built for.",
       recTestimonial: "you're leaning on a story or testimonial, which PASTOR is built to carry.",
       recPain: "your audience description names a clear pain point — PAS (or BAB) turns that into a strong hook.",
@@ -94,6 +100,8 @@
       eyebrow: "房地产广告视频 · Seedance 2.0 及其他平台",
       introH1: "设定一次，往后每支视频都能复用。",
       introDek: "本工具会按照 12 步简报法组装完整主提示词——框架、触发点、镜头规则、负面提示，以及场景时长骨架——确保不会用不完整的提示词浪费 Seedance 额度。生成结果请粘贴给 ChatGPT 获取创意场景文本，再照常喂给 Seedance。",
+      tabStyle: "风格设定", tabProject: "本次项目", tabReview: "审核并生成",
+      btnNextProject: "下一步：本次项目", btnBackStyle: "风格设定", btnNextReview: "下一步：审核并生成", btnBackProject: "本次项目",
       phaseATag: "第一阶段 · 预设",
       phaseATitle: "你的可复用风格",
       phaseASub: "对应简报的第 1–8 步。设定一次，之后每个新项目都会继承。",
@@ -145,7 +153,7 @@
       readinessTitle: "就绪检查",
       skeletonTitle: "场景时长骨架",
       skeletonSub: "按框架阶段权重与约 7 秒的平均镜头时长自动拆分。",
-      promptTitle: "组装完成的提示词", btnCopy: "复制提示词",
+      promptTitle: "组装完成的提示词", btnCopy: "复制提示词", btnDownload: "下载 .txt",
       promptNote: "提示词始终以英文组装 — AI 视频工具对英文提示词的理解最稳定。",
       footer: "内容整理自 2026 年 7 月 8 日的 AI 视频提示词工作坊方法论。完全在你的浏览器内运行 — 不会上传到任何地方。",
       toastStyleSaved: "风格已保存 — 下次会自动载入。",
@@ -154,10 +162,14 @@
       toastProjectCleared: "项目字段已清空，风格设定保留。",
       toastCopied: "提示词已复制 — 粘贴给 ChatGPT 吧。",
       toastCopyFailed: "自动复制失败 — 请手动选取文字后复制。",
+      toastDownloaded: "提示词已下载。",
       rTalent: "已定义出镜模特", rPersonality: "已选择 2–3 个性格标签",
       rGoal: "已填写目标与受众", rFramework: "已选择框架",
       rTriggers: "已选择 2–3 个触发点", rProjectBasics: "已填写项目名称与地点",
       rUsps: "已列出至少 3 个卖点", rNegative: "已确认负面提示",
+      rFix: "去修改",
+      rsLength: "长度", rsPlatform: "平台", rsFramework: "框架", rsTriggers: "触发点",
+      rsUntitled: "未命名项目",
       recColdSocial: "短社交视频面对陌生滑动受众，正是 Hook-Story-Offer 的强项。",
       recTestimonial: "你的内容偏向故事或口碑，PASTOR 最适合承载这种叙事。",
       recPain: "你的受众描述里有明确的痛点——PAS（或 BAB）能把它转化为强有力的钩子。",
@@ -181,6 +193,21 @@
     "Social Proof": "从众效应", Authority: "权威背书", Anchoring: "价格锚定",
   };
 
+  // maps each readiness key to which tab + field it belongs to, so the
+  // "Fix" button can jump straight there.
+  const READINESS_TARGET = {
+    rTalent: { tab: "style", focus: "talentEthnicity" },
+    rPersonality: { tab: "style", focus: "personalityChips" },
+    rNegative: { tab: "style", focus: "negativeField" },
+    rGoal: { tab: "project", focus: "audience" },
+    rFramework: { tab: "project", focus: "framework" },
+    rTriggers: { tab: "project", focus: "triggersField" },
+    rProjectBasics: { tab: "project", focus: "projectName" },
+    rUsps: { tab: "project", focus: "uspField" },
+  };
+  const STYLE_READINESS_KEYS = ["rTalent", "rPersonality", "rNegative"];
+  const PROJECT_READINESS_KEYS = ["rGoal", "rFramework", "rTriggers", "rProjectBasics", "rUsps"];
+
   let lang = localStorage.getItem(LANG_KEY) || "en";
   function t(key){ return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key; }
 
@@ -200,6 +227,15 @@
     resetStyleBtn: document.getElementById("resetStyleBtn"),
     saveState: document.getElementById("saveState"),
     langToggle: document.getElementById("langToggle"),
+    readinessBadge: document.getElementById("readinessBadge"),
+
+    tabbar: document.getElementById("tabbar"),
+    panelStyle: document.getElementById("panelStyle"),
+    panelProject: document.getElementById("panelProject"),
+    panelReview: document.getElementById("panelReview"),
+    dotStyle: document.getElementById("dotStyle"),
+    dotProject: document.getElementById("dotProject"),
+    dotReview: document.getElementById("dotReview"),
 
     tool: document.getElementById("tool"),
     platform: document.getElementById("platform"),
@@ -220,10 +256,12 @@
     triggerChips: document.getElementById("triggerChips"),
     newProjectBtn: document.getElementById("newProjectBtn"),
 
+    reviewSummary: document.getElementById("reviewSummary"),
     readinessList: document.getElementById("readinessList"),
     skeletonOutput: document.getElementById("skeletonOutput"),
     promptOutput: document.getElementById("promptOutput"),
     copyBtn: document.getElementById("copyBtn"),
+    downloadBtn: document.getElementById("downloadBtn"),
     toast: document.getElementById("toast"),
   };
 
@@ -246,6 +284,34 @@
     return e;
   }
 
+  // ---------- Tab navigation ----------
+  const TAB_PANELS = { style: els.panelStyle, project: els.panelProject, review: els.panelReview };
+  let activeTab = "style";
+  function setActiveTab(tabName, focusId){
+    activeTab = tabName;
+    Object.entries(TAB_PANELS).forEach(([name, panel]) => { panel.hidden = name !== tabName; });
+    els.tabbar.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tabName));
+    window.scrollTo({ top: 0, behavior: "auto" });
+    if (focusId) {
+      requestAnimationFrame(() => {
+        const target = document.getElementById(focusId);
+        if (!target) return;
+        target.scrollIntoView({ block: "center" });
+        const focusable = target.matches("input,select,textarea,button") ? target : target.querySelector("input,select,textarea,button");
+        if (focusable) focusable.focus({ preventScroll: true });
+      });
+    }
+  }
+  els.tabbar.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".tab-btn");
+    if (!btn) return;
+    setActiveTab(btn.dataset.tab);
+  });
+  document.querySelectorAll("[data-goto]").forEach(btn => {
+    btn.addEventListener("click", () => setActiveTab(btn.dataset.goto));
+  });
+  els.readinessBadge.addEventListener("click", () => setActiveTab("review"));
+
   // ---------- Static translation pass ----------
   function applyStaticTranslations(){
     document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
@@ -266,7 +332,6 @@
     localStorage.setItem(LANG_KEY, lang);
     applyStaticTranslations();
     updateSaveState();
-    // refresh dynamic placeholders on existing USP rows
     els.uspList.querySelectorAll("input").forEach(i => { i.placeholder = t("uspPlaceholder"); });
     render();
   });
@@ -446,8 +511,8 @@
       const row = el("div", "sk-row");
       const time = el("span", "sk-time", `${r.start}–${r.end}s`);
       const body = el("div");
-      const stageName = lang === "zh" ? (STAGE_I18N[r.name] || r.name) : r.name;
-      const stage = el("span", "sk-stage", stageName.toUpperCase ? (lang === "zh" ? stageName : stageName.toUpperCase()) : stageName);
+      const stageName = lang === "zh" ? (STAGE_I18N[r.name] || r.name) : r.name.toUpperCase();
+      const stage = el("span", "sk-stage", stageName);
       const shotLabel = lang === "zh" ? `${r.shots} ${t("shotWord")}` : `${r.shots} shot${r.shots > 1 ? "s" : ""}`;
       const triggerLabel = r.trigger ? ` · ${t("triggerWord")}: ${lang === "zh" ? translateTriggerLabel(r.trigger) : r.trigger}` : "";
       const note = el("span", "sk-note", `${shotLabel}${triggerLabel}`);
@@ -479,9 +544,49 @@
     items.forEach(it => {
       const li = el("li", it.ok ? "ok" : "bad");
       const dot = el("span", "readiness-dot");
+      const label = el("span", "r-label", t(it.key));
       li.appendChild(dot);
-      li.appendChild(document.createTextNode(t(it.key)));
+      li.appendChild(label);
+      if (!it.ok && READINESS_TARGET[it.key]) {
+        const fixBtn = el("button", "r-fix", t("rFix"));
+        fixBtn.type = "button";
+        fixBtn.addEventListener("click", () => {
+          const target = READINESS_TARGET[it.key];
+          setActiveTab(target.tab, target.focus);
+        });
+        li.appendChild(fixBtn);
+      }
       els.readinessList.appendChild(li);
+    });
+
+    const okCount = items.filter(i => i.ok).length;
+    els.readinessBadge.textContent = `${okCount}/${items.length}`;
+    els.readinessBadge.classList.toggle("ready", okCount === items.length);
+
+    const styleOk = items.filter(i => STYLE_READINESS_KEYS.includes(i.key)).every(i => i.ok);
+    const projectOk = items.filter(i => PROJECT_READINESS_KEYS.includes(i.key)).every(i => i.ok);
+    els.dotStyle.classList.toggle("complete", styleOk);
+    els.dotProject.classList.toggle("complete", projectOk);
+    els.dotReview.classList.toggle("complete", styleOk && projectOk);
+  }
+
+  function renderReviewSummary(project){
+    els.reviewSummary.innerHTML = "";
+    const title = el("div", "rs-title", project.projectName || t("rsUntitled"));
+    els.reviewSummary.appendChild(title);
+    const fwMeta = FRAMEWORK_META[project.framework];
+    const items = [
+      [t("rsLength"), `${project.lengthSec}s`],
+      [t("rsPlatform"), project.platform],
+      [t("rsFramework"), fwMeta ? fwMeta.name : "—"],
+      [t("rsTriggers"), getChipValues(els.triggerChips).join(", ") || "—"],
+    ];
+    items.forEach(([label, value]) => {
+      const span = el("span", "rs-item");
+      const b = el("b", null, value);
+      span.appendChild(document.createTextNode(label + ": "));
+      span.appendChild(b);
+      els.reviewSummary.appendChild(span);
     });
   }
 
@@ -575,9 +680,11 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
     const skeleton = buildSkeleton(activeFrameworkKey, project.lengthSec, triggers);
     renderSkeleton(skeleton);
 
+    const projectForDisplay = { ...project, framework: project.framework || activeFrameworkKey };
     renderReadiness(computeReadiness(style, project));
+    renderReviewSummary(projectForDisplay);
 
-    els.promptOutput.textContent = buildPrompt(style, { ...project, framework: project.framework || activeFrameworkKey }, skeleton);
+    els.promptOutput.textContent = buildPrompt(style, projectForDisplay, skeleton);
   }
 
   // wire up remaining inputs to re-render
@@ -601,6 +708,21 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
     }
   });
 
+  // download
+  els.downloadBtn.addEventListener("click", () => {
+    const name = (els.projectName.value.trim() || "video-prompt").replace(/[^a-z0-9]+/gi, "-").toLowerCase();
+    const blob = new Blob([els.promptOutput.textContent], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${name}-prompt.txt`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast(t("toastDownloaded"));
+  });
+
   let toastTimer;
   function showToast(msg){
     els.toast.textContent = msg;
@@ -615,5 +737,6 @@ ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
   updateSaveState();
   const savedRaw = localStorage.getItem(STYLE_KEY);
   if (savedRaw) applyStyle(JSON.parse(savedRaw));
+  setActiveTab("style");
   render();
 })();

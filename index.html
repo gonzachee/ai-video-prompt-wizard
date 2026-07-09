@@ -18,24 +18,36 @@
     </div>
     <div class="topbar-actions">
       <span class="save-state" id="saveState" data-i18n="saveStateEmpty">Style not saved yet</span>
+      <button type="button" class="readiness-badge" id="readinessBadge">0/8</button>
       <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
         <button type="button" class="lang-btn" data-lang="en">EN</button>
         <button type="button" class="lang-btn" data-lang="zh">中文</button>
       </div>
     </div>
   </div>
+  <nav class="tabbar" id="tabbar">
+    <button type="button" class="tab-btn active" data-tab="style">
+      <span class="tab-num">1</span><span data-i18n="tabStyle">Style</span><span class="tab-dot" id="dotStyle"></span>
+    </button>
+    <button type="button" class="tab-btn" data-tab="project">
+      <span class="tab-num">2</span><span data-i18n="tabProject">Project</span><span class="tab-dot" id="dotProject"></span>
+    </button>
+    <button type="button" class="tab-btn" data-tab="review">
+      <span class="tab-num">3</span><span data-i18n="tabReview">Review &amp; Generate</span><span class="tab-dot" id="dotReview"></span>
+    </button>
+  </nav>
 </header>
 
 <main class="layout">
-  <div class="form-col">
 
-    <div class="intro">
-      <p class="eyebrow" data-i18n="eyebrow">Property ad videos · Seedance 2.0 &amp; friends</p>
-      <h1 data-i18n="introH1">Answer once, reuse the brief every time.</h1>
-      <p class="intro-dek" data-i18n="introDek">This assembles the exact master prompt from the 12-step brief method — framework, triggers, camera rules, negative prompt, and a scene-timing skeleton — so nothing incomplete burns a Seedance credit. Paste the result into ChatGPT to get the creative scene text, then into Seedance as usual.</p>
-    </div>
+  <div class="intro">
+    <p class="eyebrow" data-i18n="eyebrow">Property ad videos · Seedance 2.0 &amp; friends</p>
+    <h1 data-i18n="introH1">Answer once, reuse the brief every time.</h1>
+    <p class="intro-dek" data-i18n="introDek">This assembles the exact master prompt from the 12-step brief method — framework, triggers, camera rules, negative prompt, and a scene-timing skeleton — so nothing incomplete burns a Seedance credit. Paste the result into ChatGPT to get the creative scene text, then into Seedance as usual.</p>
+  </div>
 
-    <!-- PHASE A -->
+  <!-- TAB 1: STYLE -->
+  <div class="tab-panel" id="panelStyle">
     <section class="panel" id="phaseA">
       <div class="panel-head">
         <span class="phase-tag phase-a" data-i18n="phaseATag">Phase A · set once</span>
@@ -112,7 +124,7 @@
         <input type="range" id="ratioBroll" min="40" max="90" value="70" step="5">
       </div>
 
-      <div class="field">
+      <div class="field" id="negativeField">
         <span class="field-label" data-i18n="lblNegative">Negative prompt — excluded from every generation</span>
         <div class="neg-grid" id="negativeGrid">
           <label class="neg-item"><input type="checkbox" data-neg="No subtitles / on-screen text" checked><span data-i18n="neg1">No subtitles / on-screen text</span></label>
@@ -130,8 +142,13 @@
         <button class="btn btn-ghost" id="resetStyleBtn" data-i18n="btnResetStyle">Reset to blank</button>
       </div>
     </section>
+    <div class="tab-nav-actions">
+      <button type="button" class="btn btn-primary" data-goto="project"><span data-i18n="btnNextProject">Next: This Project</span> →</button>
+    </div>
+  </div>
 
-    <!-- PHASE B -->
+  <!-- TAB 2: PROJECT -->
+  <div class="tab-panel" id="panelProject" hidden>
     <section class="panel" id="phaseB">
       <div class="panel-head">
         <span class="phase-tag phase-b" data-i18n="phaseBTag">Phase B · per project</span>
@@ -198,7 +215,7 @@
         </label>
       </div>
 
-      <div class="field">
+      <div class="field" id="uspField">
         <span class="field-label" data-i18n="lblUsps">Key selling points (USPs)</span>
         <div id="uspList" class="usp-list"></div>
         <button type="button" class="btn btn-ghost btn-small" id="addUspBtn" data-i18n="btnAddUsp">+ Add selling point</button>
@@ -223,7 +240,7 @@
         </select>
       </div>
 
-      <div class="field">
+      <div class="field" id="triggersField">
         <span class="field-label" data-i18n="lblTriggers">Psychological triggers (pick 2–3)</span>
         <div class="chip-picker" id="triggerChips" data-max="3">
           <button type="button" class="chip" data-value="FOMO" data-i18n="trigFOMO">FOMO</button>
@@ -239,31 +256,43 @@
         <button class="btn btn-ghost" id="newProjectBtn" data-i18n="btnNewProject">New project (clears this section only)</button>
       </div>
     </section>
+    <div class="tab-nav-actions">
+      <button type="button" class="btn btn-ghost" data-goto="style">← <span data-i18n="btnBackStyle">Back: Style</span></button>
+      <button type="button" class="btn btn-primary" data-goto="review"><span data-i18n="btnNextReview">Next: Review &amp; Generate</span> →</button>
+    </div>
   </div>
 
-  <aside class="side-col">
-    <div class="sticky-wrap">
-      <div class="panel readiness-panel">
-        <h3 data-i18n="readinessTitle">Readiness check</h3>
-        <ul class="readiness-list" id="readinessList"></ul>
-      </div>
+  <!-- TAB 3: REVIEW -->
+  <div class="tab-panel" id="panelReview" hidden>
+    <div class="review-summary" id="reviewSummary"></div>
 
-      <div class="panel skeleton-panel">
-        <h3 data-i18n="skeletonTitle">Scene-timing skeleton</h3>
-        <p class="panel-sub" data-i18n="skeletonSub">Auto-split by framework stage weighting and an ~7s average shot length.</p>
-        <div id="skeletonOutput" class="skeleton-output"></div>
-      </div>
+    <section class="panel readiness-panel">
+      <h3 data-i18n="readinessTitle">Readiness check</h3>
+      <ul class="readiness-list" id="readinessList"></ul>
+    </section>
 
-      <div class="panel prompt-panel">
-        <div class="prompt-panel-head">
-          <h3 data-i18n="promptTitle">Assembled prompt</h3>
+    <section class="panel skeleton-panel">
+      <h3 data-i18n="skeletonTitle">Scene-timing skeleton</h3>
+      <p class="panel-sub" data-i18n="skeletonSub">Auto-split by framework stage weighting and an ~7s average shot length.</p>
+      <div id="skeletonOutput" class="skeleton-output"></div>
+    </section>
+
+    <section class="panel prompt-panel">
+      <div class="prompt-panel-head">
+        <h3 data-i18n="promptTitle">Assembled prompt</h3>
+        <div class="prompt-actions">
+          <button class="btn btn-ghost btn-small" id="downloadBtn" data-i18n="btnDownload">Download .txt</button>
           <button class="btn btn-primary btn-small" id="copyBtn" data-i18n="btnCopy">Copy prompt</button>
         </div>
-        <p class="prompt-note" data-i18n="promptNote">Always assembled in English — AI video tools parse English prompts most reliably.</p>
-        <pre class="prompt-output" id="promptOutput"></pre>
       </div>
+      <p class="prompt-note" data-i18n="promptNote">Always assembled in English — AI video tools parse English prompts most reliably.</p>
+      <pre class="prompt-output" id="promptOutput"></pre>
+    </section>
+
+    <div class="tab-nav-actions">
+      <button type="button" class="btn btn-ghost" data-goto="project">← <span data-i18n="btnBackProject">Back: Project</span></button>
     </div>
-  </aside>
+  </div>
 </main>
 
 <footer class="site-footer" data-i18n="footer">
