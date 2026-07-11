@@ -4,7 +4,7 @@
   const STYLE_KEY = "aivpw_style_v1";
   const LANG_KEY = "aivpw_lang";
   const GATE_KEY = "aivpw_unlocked";
-  const PASSWORD_HASH = "71b82e0e5777d9aada2dd299c2b37f514f8bd253f48b517c81d9c670a685b702";
+  const PASSWORD_HASH = "51b9ee5ed23130fd6a0a4b969a28e785168302cf0f83479523d31c92e771cc6b";
 
   // ---------------------------------------------------------------------
   // i18n dictionary — Chinese terms reused verbatim from the original
