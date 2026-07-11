@@ -57,6 +57,14 @@
       platIG: "Instagram Reel", platTikTok: "TikTok", platFB: "Facebook", platYT: "YouTube", platWA: "WhatsApp / Website",
       lblProjectName: "Project name", phProjectName: "e.g. The Astaka, Bukit Jalil",
       lblLocation: "Location", phLocation: "e.g. Bukit Jalil, Kuala Lumpur",
+      lblPropertyType: "Property type",
+      ptCondo: "Luxury condominium", ptHighrise: "Premium high-rise", ptServiced: "Serviced apartment",
+      ptPenthouse: "Penthouse", ptTerrace: "Landed terrace", ptSemiD: "Semi-D", ptBungalow: "Bungalow",
+      ptCommercial: "Commercial / Retail",
+      lblScriptLang: "Script language — what the talent actually says on camera",
+      langEnglish: "English", langMandarin: "Chinese (Mandarin)", langBM: "Bahasa Malaysia",
+      langCantonese: "Cantonese", langTamil: "Tamil", langManglish: "Manglish (BM + English)",
+      lblThreeAngles: "Generate 3 alternative angles instead of 1 (different hook/emotional angle each, same skeleton)",
       lblAudience: "Target audience", phAudience: "e.g. Malaysians who want to live in or invest in Bukit Jalil",
       lblObjective: "Objective — what should the viewer do?", phObjective: "e.g. Trigger buying interest and get viewers to sign up with us",
       lblPrice: "Price / instalment", phPrice: "e.g. from RM 3,300/month",
@@ -96,6 +104,7 @@
       rUsps: "At least 3 selling points listed", rNegative: "Negative prompt confirmed",
       rFix: "Fix",
       rsLength: "Length", rsPlatform: "Platform", rsFramework: "Framework", rsTriggers: "Triggers",
+      rsScriptLang: "Script",
       rsUntitled: "Untitled project",
       recColdSocial: "short reel + cold scrolling audience is exactly what Hook-Story-Offer is built for.",
       recTestimonial: "you're leaning on a story or testimonial, which PASTOR is built to carry.",
@@ -150,6 +159,14 @@
       platIG: "Instagram Reel", platTikTok: "TikTok", platFB: "Facebook", platYT: "YouTube", platWA: "WhatsApp / 网站",
       lblProjectName: "项目名称", phProjectName: "例如：The Astaka, Bukit Jalil",
       lblLocation: "地点", phLocation: "例如：武吉加里尔（Bukit Jalil），吉隆坡",
+      lblPropertyType: "物业类型",
+      ptCondo: "豪华公寓", ptHighrise: "高级高层住宅", ptServiced: "服务式公寓",
+      ptPenthouse: "顶层复式（Penthouse）", ptTerrace: "排屋", ptSemiD: "半独立式洋房", ptBungalow: "独立式洋房",
+      ptCommercial: "商用／零售",
+      lblScriptLang: "台词语言 — 出镜人物实际开口说的语言",
+      langEnglish: "英语", langMandarin: "中文（普通话）", langBM: "马来语",
+      langCantonese: "粤语", langTamil: "淡米尔语", langManglish: "Manglish（马来语＋英语混用）",
+      lblThreeAngles: "生成 3 个不同角度，而非 1 个（每个角度用不同的钩子／情感切入，场景骨架相同）",
       lblAudience: "目标受众", phAudience: "例如：想在武吉加里尔居住或投资的马来西亚人",
       lblObjective: "目的 — 希望观众采取什么行动？", phObjective: "例如：激发购买兴趣，让观众向我们登记",
       lblPrice: "价格 / 月供", phPrice: "例如：月供从 RM 3,300 起",
@@ -189,6 +206,7 @@
       rUsps: "已列出至少 3 个卖点", rNegative: "已确认负面提示",
       rFix: "去修改",
       rsLength: "长度", rsPlatform: "平台", rsFramework: "框架", rsTriggers: "触发点",
+      rsScriptLang: "台词语言",
       rsUntitled: "未命名项目",
       recColdSocial: "短社交视频面对陌生滑动受众，正是 Hook-Story-Offer 的强项。",
       recTestimonial: "你的内容偏向故事或口碑，PASTOR 最适合承载这种叙事。",
@@ -331,6 +349,9 @@
     platform: document.getElementById("platform"),
     projectName: document.getElementById("projectName"),
     location: document.getElementById("location"),
+    propertyType: document.getElementById("propertyType"),
+    scriptLang: document.getElementById("scriptLang"),
+    threeAngles: document.getElementById("threeAngles"),
     audience: document.getElementById("audience"),
     objective: document.getElementById("objective"),
     priceInfo: document.getElementById("priceInfo"),
@@ -705,6 +726,7 @@
       [t("rsPlatform"), project.platform],
       [t("rsFramework"), fwMeta ? fwMeta.name : "—"],
       [t("rsTriggers"), getChipValues(els.triggerChips).join(", ") || "—"],
+      [t("rsScriptLang"), project.scriptLang],
     ];
     items.forEach(([label, value]) => {
       const span = el("span", "rs-item");
@@ -737,6 +759,7 @@ build desire, trigger sign-ups.
 
 02 PROJECT
 Project: ${project.projectName || "[project name]"} · Location: ${project.location || "[location]"}
+Property type: ${project.propertyType}
 Audience: ${project.audience || "[audience]"}
 Objective: ${project.objective || "[objective]"}
 Price/instalment: ${project.priceInfo || "[price]"} · Size/layout: ${project.sizeInfo || "[size]"}
@@ -764,15 +787,17 @@ ${style.negatives.length ? style.negatives.join(". ") + "." : "[confirm your neg
 07 OUTPUT
 Scene-by-scene: # + seconds · shot & camera move · face-to-cam or VO · script ·
 on-screen suggestion · trigger. End on one clear CTA + brand card (added in edit).
+Script language: write every spoken/VO line in ${project.scriptLang}. Keep all
+camera directions, shot labels and technical notes in English.
 
 SCENE SKELETON — follow these exact cuts, time codes, modes and camera moves.
 Each "Cut" is a separate shot in the final video (multi-cut, not one long take):
 ${skeletonLines}
 
-For every cut above, write the full shot: camera framing/movement (expand on
-the move given), what's happening on screen, and — for face-cam/VO cuts only —
-the spoken line. Keep b-roll cuts wordless. Output in a format ready to paste
-straight into ${project.tool || "Seedance 2.0"}.`;
+${project.threeAngles
+  ? `Generate 3 DIFFERENT creative angles for this video — vary the hook and\nemotional angle each time (e.g. different opening line, different framing of\nthe selling points) — but have all 3 follow the same scene skeleton above.\nLabel them clearly "ANGLE 1", "ANGLE 2", "ANGLE 3". For every cut in each\nangle, write the full shot: camera framing/movement (expand on the move\ngiven), what's happening on screen, and — for face-cam/VO cuts only — the\nspoken line in ${project.scriptLang}. Keep b-roll cuts wordless.`
+  : `For every cut above, write the full shot: camera framing/movement (expand on\nthe move given), what's happening on screen, and — for face-cam/VO cuts only —\nthe spoken line in ${project.scriptLang}. Keep b-roll cuts wordless.`}
+Output in a format ready to paste straight into ${project.tool || "Seedance 2.0"}.`;
   }
 
   // ---------- Main render ----------
@@ -783,6 +808,9 @@ straight into ${project.tool || "Seedance 2.0"}.`;
       platform: els.platform.value,
       projectName: els.projectName.value.trim(),
       location: els.location.value.trim(),
+      propertyType: els.propertyType.value,
+      scriptLang: els.scriptLang.value,
+      threeAngles: els.threeAngles.checked,
       audience: els.audience.value.trim(),
       objective: els.objective.value.trim(),
       priceInfo: els.priceInfo.value.trim(),
@@ -823,13 +851,14 @@ straight into ${project.tool || "Seedance 2.0"}.`;
   // wire up remaining inputs to re-render
   [
     "talentEthnicity","talentGender","talentAge","talentRole","deliveryPrimary","mood","avgShotSec",
-    "tool","platform","projectName","location","audience","objective","priceInfo",
+    "tool","platform","projectName","location","propertyType","scriptLang","audience","objective","priceInfo",
     "sizeInfo","furnishing","lengthSec","framework"
   ].forEach(id => {
     els[id].addEventListener("input", render);
     els[id].addEventListener("change", render);
   });
   els.negativeGrid.addEventListener("change", render);
+  els.threeAngles.addEventListener("change", render);
 
   // copy
   els.copyBtn.addEventListener("click", async () => {

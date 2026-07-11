@@ -205,6 +205,19 @@
           <span class="field-label" data-i18n="lblLocation">Location</span>
           <input type="text" id="location" data-i18n-placeholder="phLocation" placeholder="e.g. Bukit Jalil, Kuala Lumpur">
         </label>
+        <label class="field">
+          <span class="field-label" data-i18n="lblPropertyType">Property type</span>
+          <select id="propertyType">
+            <option value="Luxury condominium" data-i18n="ptCondo">Luxury condominium</option>
+            <option value="Premium high-rise" data-i18n="ptHighrise">Premium high-rise</option>
+            <option value="Serviced apartment" data-i18n="ptServiced">Serviced apartment</option>
+            <option value="Penthouse" data-i18n="ptPenthouse">Penthouse</option>
+            <option value="Landed terrace" data-i18n="ptTerrace">Landed terrace</option>
+            <option value="Semi-D" data-i18n="ptSemiD">Semi-D</option>
+            <option value="Bungalow" data-i18n="ptBungalow">Bungalow</option>
+            <option value="Commercial / Retail" data-i18n="ptCommercial">Commercial / Retail</option>
+          </select>
+        </label>
       </div>
 
       <label class="field">
@@ -241,6 +254,18 @@
         </label>
       </div>
 
+      <div class="field">
+        <span class="field-label" data-i18n="lblScriptLang">Script language — what the talent actually says on camera</span>
+        <select id="scriptLang">
+          <option value="English" data-i18n="langEnglish">English</option>
+          <option value="Chinese (Mandarin)" data-i18n="langMandarin">Chinese (Mandarin)</option>
+          <option value="Bahasa Malaysia" data-i18n="langBM">Bahasa Malaysia</option>
+          <option value="Cantonese" data-i18n="langCantonese">Cantonese</option>
+          <option value="Tamil" data-i18n="langTamil">Tamil</option>
+          <option value="Manglish (BM + English)" data-i18n="langManglish">Manglish (BM + English)</option>
+        </select>
+      </div>
+
       <div class="field" id="uspField">
         <span class="field-label" data-i18n="lblUsps">Key selling points (USPs)</span>
         <div id="uspList" class="usp-list"></div>
@@ -265,6 +290,11 @@
           <option value="PASTOR" data-i18n="fwPASTOR">PASTOR — Problem·Amplify·Story·Transformation·Offer·Response (brand film)</option>
         </select>
       </div>
+
+      <label class="neg-item field-checkbox">
+        <input type="checkbox" id="threeAngles">
+        <span data-i18n="lblThreeAngles">Generate 3 alternative angles instead of 1 (different hook/emotional angle each, same skeleton)</span>
+      </label>
 
       <div class="field" id="triggersField">
         <span class="field-label" data-i18n="lblTriggers">Psychological triggers (pick 2–3)</span>
